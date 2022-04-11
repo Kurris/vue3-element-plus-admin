@@ -11,7 +11,8 @@
     "@element-plus/icons-vue": "^1.1.4",
     "element-plus": "^2.1.8",
     "normalize.css": "^8.0.1",
-    "vue": "^3.2.25"
+    "vue": "^3.2.25",
+    "vue-router": "^4.0.14"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^2.3.0",
