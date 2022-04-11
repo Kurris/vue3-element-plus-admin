@@ -3,11 +3,13 @@ import scanRoutes from './routes'
 
 const routes: RouteRecordRaw[] = [
 	{
-		path: '/',
+		path: '',
 		redirect: '/test',
 	},
 	...scanRoutes,
 ]
+
+console.log(routes)
 
 const router = createRouter({
 	history: createWebHistory(),

@@ -12,6 +12,7 @@
 
 			<tab-bar />
 			<el-main>
+				<router-link to="/test/son">nihao </router-link>
 				<router-view />
 			</el-main>
 		</el-container>

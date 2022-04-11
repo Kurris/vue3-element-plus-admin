@@ -1,6 +1,5 @@
 <template>
-	<div>这是测试路由</div>
-	<router-view />
+	<div>test 1</div>
 </template>
 
 <script setup lang="ts"></script>

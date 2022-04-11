@@ -13,12 +13,12 @@ declare interface AppRouteRecordRaw1 extends Omit<AppRouteRecordRaw, 'meta'> {
 	meta: RouteMeta
 }
 
-declare interface AppRouteRecordRaw2 extends Omit<AppRouteRecordRaw1, 'children'> {
-	children?: AppRouteRecordRaw2[]
+declare interface AppRouteRecordRaw2 extends Omit<AppRouteRecordRaw1, 'component'> {
+	component: Component | string
 }
 
-declare interface AppRouteRecordRaw3 extends Omit<AppRouteRecordRaw2, 'component'> {
-	component: Component | string
+declare interface AppRouteRecordRaw3 extends Omit<AppRouteRecordRaw2, 'children'> {
+	children?: AppRouteRecordRaw3[]
 }
 
 export default AppRouteRecordRaw3
