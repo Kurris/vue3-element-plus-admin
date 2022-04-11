@@ -49,8 +49,8 @@ body{
 .el-aside {
   overflow-x: hidden !important;
   border: none;
-  background-color: #304156;
-	transition: width 0.2s ease;
+  background-color: var(--navbar-color);
+	transition: width 0.3s ease;
   max-width: 210px !important;
 }
 
@@ -60,13 +60,45 @@ body{
 	max-width: 210px !important;
 }
 
-.el-tabs__item{
-  padding: 0px !important;
-  height: 26px !important;
-  line-height: 26px !important;
-  font-size: 10px !important;
-  margin: left 3px !important; 
+.el-tabs__nav{
+  border: none !important;
+  margin-left: 10px !important ;
+  .el-tabs__item{
+    padding-left: 15px !important;
+    padding-right: 15px !important;
+    border-radius: 1px;
+    transition: unset !important;
+    height: 26px !important;
+    line-height: 26px !important;
+    font-size: 10px !important;
+    border: 1px solid #d8dce4 !important;
+    &:hover{
+      transition:unset;
+      color: unset;
+      padding: unset;
+      transition: unset;
+    }
+    &+.el-tabs__item{
+      margin: 5px !important; 
+    }
+
+    &.is-active{
+      color: white !important;
+      background-color: #2aba85 !important;
+      width: unset !important;
+    }
+    & .is-icon-close{
+      transition: unset !important;
+      display: inline !important;
+    }
+  }
 }
+
+.el-tabs__header{
+  border: 0px !important;
+  box-shadow: 0 1px 4px #d8dce4;
+}
+
 
 
 

@@ -1,6 +1,12 @@
 <template>
 	<el-tabs v-model="editableTabsValue" type="card" class="demo-tabs" closable>
 		<el-tab-pane v-for="item in editableTabs" :key="item.name" :label="item.title" :name="item.name">
+			<template #label>
+				<el-icon class="activeTabIcon">
+					<d-arrow-right />
+				</el-icon>
+				{{ item.title }}
+			</template>
 			{{ item.content }}
 		</el-tab-pane>
 	</el-tabs>
@@ -31,8 +37,16 @@ const editableTabs = ref([
 	font-size: 32px;
 	font-weight: 600;
 }
-.main-tab {
-	height: 36px;
-	border-bottom: 0.5px solid rgba(0, 0, 0, 0.2);
+
+.el-tabs__item {
+	&.is-active {
+		.activeTabIcon {
+			display: inline;
+		}
+	}
+}
+
+.activeTabIcon {
+	display: none;
 }
 </style>
