@@ -7,12 +7,18 @@
 
 		<el-container>
 			<el-header>
-				<header-bar @set-collapse="setCollapse" />
+				<header-bar
+					@set-collapse="setCollapse"
+					:breads="[
+						{ name: 'ligy', path: '/test/son' },
+						{ name: 'ligy', path: '/test/son' },
+					]"
+				/>
 			</el-header>
 
 			<tab-bar />
 			<el-main>
-				<router-link to="/test/son">nihao </router-link>
+				<!-- <router-link to="/test1">route link </router-link> -->
 				<router-view />
 			</el-main>
 		</el-container>
@@ -21,7 +27,7 @@
 
 <script setup lang="ts">
 import { reactive } from 'vue'
-
+import { useRoute } from 'vue-router'
 import NavBar from './components/layout/NavBar.vue'
 import HeaderBar from './components/layout/HeaderBar.vue'
 import TabBar from './components/layout/TabBar.vue'
@@ -29,6 +35,9 @@ import TabBar from './components/layout/TabBar.vue'
 let state = reactive({
 	isCollapse: false,
 })
+
+const route = useRoute()
+console.log('route' + route)
 
 const setCollapse = (isCollapse: boolean) => {
 	state.isCollapse = isCollapse

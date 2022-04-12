@@ -7,10 +7,9 @@
 
 		<div class="breadCrumb">
 			<el-breadcrumb separator="/">
-				<el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
-				<el-breadcrumb-item>promotion management</el-breadcrumb-item>
-				<el-breadcrumb-item>promotion list</el-breadcrumb-item>
-				<el-breadcrumb-item>promotion detail</el-breadcrumb-item>
+				<template v-for="item in breads">
+					<el-breadcrumb-item :to="{ path: item.path }">{{ item.name }}</el-breadcrumb-item>
+				</template>
 			</el-breadcrumb>
 		</div>
 		<top-right />
@@ -21,9 +20,18 @@
 import { reactive } from 'vue'
 import TopRight from './TopRight.vue'
 
+interface breadRecord {
+	name: string
+	path: string
+}
+
 let state = reactive({
 	isCollapse: false,
 })
+
+const props = defineProps<{
+	breads: breadRecord[]
+}>()
 
 const emit = defineEmits<{
 	(e: 'setCollapse', isCollapse: boolean): void
@@ -54,6 +62,12 @@ const setCollapse = () => {
 		height: 50px;
 		align-items: center;
 		justify-content: center;
+
+		// .el-breadcrumb__item {
+		// 	:hover {
+		// 		cursor: pointer;
+		// 	}
+		// }
 	}
 }
 </style>

@@ -16,13 +16,27 @@
     ],
     "types": [
       "element-plus/global"
-    ]
+    ],
+    "baseUrl": "./",
+    "paths": {
+      "@/*": [
+        "src/*"
+      ],
+      "@views/*": [
+        "src/views/*"
+      ],
+      "@styles/*": [
+        "src/styles/*"
+      ]
+    }
   },
   "include": [
     "src/**/*.ts",
     "src/**/*.d.ts",
     "src/**/*.tsx",
-    "src/**/*.vue"
+    "src/**/*.vue",
+    "src/**/*.css",
+    "src/**/*.scss"
   ],
   "references": [
     {

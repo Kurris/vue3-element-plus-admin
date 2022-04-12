@@ -6,7 +6,7 @@ const test1: AppRoute = {
 	meta: {
 		title: 'test1 route',
 	},
-	component: () => import('../../../views/Test1.vue'),
+	component: () =>import('../../../views/Test1.vue') ,
 }
 
-export default test1
+ export default test1

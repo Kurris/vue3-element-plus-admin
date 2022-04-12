@@ -1,41 +1,44 @@
 <template>
-	<el-tabs v-model="editableTabsValue" type="card" class="demo-tabs" closable>
-		<el-tab-pane v-for="item in editableTabs" :key="item.name" :label="item.title" :name="item.name">
-			<template #label>
-				<el-icon class="activeTabIcon">
-					<d-arrow-right />
-				</el-icon>
-				{{ item.title }}
-			</template>
-			{{ item.content }}
-		</el-tab-pane>
-	</el-tabs>
+	<div class="main-tabs">
+		<el-tabs v-model="state.activeTab" type="card">
+			<el-tab-pane v-for="item in state.tabs" :key="item.name" :label="item.title" :name="item.name" :closable="item.closable">
+				<template #label>
+					<el-icon class="activeTabIcon">
+						<d-arrow-right />
+					</el-icon>
+					{{ item.title }}
+				</template>
+			</el-tab-pane>
+		</el-tabs>
+
+		<div class="tabOperation">tab 操作栏</div>
+	</div>
 </template>
 <script lang="ts" setup>
-import { ref } from 'vue'
+import { reactive } from 'vue'
 
-let tabIndex = 2
-const editableTabsValue = ref('2')
-const editableTabs = ref([
-	{
-		title: 'Tab 1',
-		name: '1',
-		content: 'Tab 1 content',
-	},
-	{
-		title: 'Tab 2',
-		name: '2',
-		content: 'Tab 2 content',
-	},
-])
+const state = reactive({
+	activeTab: '1',
+	tabs: [
+		{
+			title: 'Tab 1',
+			name: '1',
+			content: 'Tab 1 content',
+			closable: true,
+		},
+		{
+			title: 'Tab 2',
+			name: '2',
+			content: 'Tab 2 content',
+			closable: false,
+		},
+	],
+})
 </script>
 
 <style scoped lang="scss">
-.demo-tabs > .el-tabs__content {
-	padding: 32px;
-	color: #6b778c;
-	font-size: 32px;
-	font-weight: 600;
+.el-tabs.el-tabs--top.el-tabs--card {
+	height: 36px;
 }
 
 .el-tabs__item {
@@ -48,5 +51,20 @@ const editableTabs = ref([
 
 .activeTabIcon {
 	display: none;
+}
+
+.main-tabs {
+	display: flex;
+	justify-content: space-between;
+	box-shadow: 0 1px 4px #c1c1c1;
+
+	.tabOperation {
+		display: flex;
+		align-items: center;
+		width: 150px;
+		height: 36px;
+		margin-left: 10px;
+		background-color: antiquewhite;
+	}
 }
 </style>

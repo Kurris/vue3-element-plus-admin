@@ -1,5 +1,16 @@
 <template>
-	<el-menu :collapse="isCollapse" :collapse-transition="false" active-text-color="#409eff" background-color="#304156" default-active="2" text-color="#fff" @open="handleOpen" @close="handleClose">
+	<!-- background-color="#304156" -->
+	<el-menu
+		:collapse="isCollapse"
+		router
+		:collapse-transition="false"
+		active-text-color="#409eff"
+		background-color="#304156"
+		:default-active="state.navBarActive"
+		text-color="#fff"
+		@open="handleOpen"
+		@close="handleClose"
+	>
 		<el-sub-menu index="1">
 			<template #title>
 				<el-icon>
@@ -8,8 +19,8 @@
 				<span>Navigator</span>
 			</template>
 			<el-menu-item-group title="Group One">
-				<el-menu-item index="1-1">item1</el-menu-item>
-				<el-menu-item index="1-2">item1</el-menu-item>
+				<el-menu-item index="test1">test1</el-menu-item>
+				<el-menu-item index="test">test</el-menu-item>
 			</el-menu-item-group>
 			<el-menu-item-group title="Group Two">
 				<el-menu-item index="1-3">item3</el-menu-item>
@@ -29,6 +40,8 @@
 </template>
 
 <script lang="ts" setup>
+import { reactive } from 'vue'
+
 const props = defineProps<{
 	isCollapse: boolean
 }>()
@@ -39,5 +52,9 @@ const handleOpen = (key: string, keyPath: string[]) => {
 const handleClose = (key: string, keyPath: string[]) => {
 	// console.log(key, keyPath)
 }
+
+const state = reactive({
+	navBarActive: 'test',
+})
 </script>
 <style scoped></style>
