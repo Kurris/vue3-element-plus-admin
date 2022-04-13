@@ -1,15 +1,18 @@
 <template>
 	<div class="main-topRight">
-		<div class="plugin">
+		<div class="plugin search">
 			<el-icon><search /></el-icon>
+			<el-input v-model="state.input" placeholder="内容搜索" clearable />
 		</div>
 
 		<div class="plugin">
 			<el-icon><message /></el-icon>
 		</div>
 
-		<div class="plugin">
-			<el-icon><full-screen /></el-icon>
+		<div class="plugin" @click="toggle">
+			<el-tooltip :content="isFullscreen ? '退出全屏' : '全屏'" placement="bottom" effect="dark">
+				<el-icon><full-screen /></el-icon>
+			</el-tooltip>
 		</div>
 
 		<div class="plugin">
@@ -37,16 +40,20 @@
 	</div>
 </template>
 
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import { useFullscreen } from '@vueuse/core'
+import { reactive } from 'vue'
+const { isFullscreen, toggle } = useFullscreen()
+
+const state = reactive({
+	input: '',
+})
+</script>
 <style scoped lang="scss">
 .main-topRight {
 	display: flex;
-	margin-left: auto;
-	margin-right: 20px;
 	height: 50px;
-	width: 200px;
-	flex-wrap: wrap;
-	justify-content: space-between;
+	justify-content: flex-end;
 	align-items: center;
 
 	>>> .el-dropdown__popper {
@@ -58,9 +65,20 @@
 	&:hover {
 		cursor: pointer;
 	}
+	& + .plugin {
+		margin-left: 10px;
+		margin-right: 10px;
+	}
 }
 
 .el-avatar {
 	border-radius: 10px;
+}
+
+.plugin.search {
+	.el-input {
+		display: none;
+		width: 100px;
+	}
 }
 </style>
