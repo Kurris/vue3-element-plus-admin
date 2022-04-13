@@ -1,8 +1,8 @@
 <template>
 	<div class="main-topRight">
-		<div class="plugin search">
-			<el-icon><search /></el-icon>
-			<el-input v-model="state.input" placeholder="内容搜索" clearable />
+		<div :class="{ searchInputIsFocuse: state.inputFocus, plugin: true, search: true }">
+			<el-icon @click="useSearch"><search /></el-icon>
+			<el-input ref="searchInput" :style="{ width: state.inputWidth + 'px' }" v-model="state.input" placeholder="内容搜索" @blur="inputBlur" clearable />
 		</div>
 
 		<div class="plugin">
@@ -42,12 +42,31 @@
 
 <script setup lang="ts">
 import { useFullscreen } from '@vueuse/core'
-import { reactive } from 'vue'
+import { reactive, ref } from 'vue'
 const { isFullscreen, toggle } = useFullscreen()
+
+let searchInput = ref(null)
 
 const state = reactive({
 	input: '',
+	inputWidth: 0,
+	inputFocus: false,
 })
+
+const useSearch = () => {
+	state.inputFocus = !state.inputFocus
+
+	if (state.inputFocus) {
+		state.inputWidth = 200
+		;(searchInput.value as any).focus()
+	} else {
+		state.inputWidth = 0
+	}
+}
+const inputBlur = () => {
+	state.inputWidth = 0
+	state.inputFocus = false
+}
 </script>
 <style scoped lang="scss">
 .main-topRight {
@@ -56,9 +75,9 @@ const state = reactive({
 	justify-content: flex-end;
 	align-items: center;
 
-	>>> .el-dropdown__popper {
-		margin-left: -30px !important;
-	}
+	// >>> .el-dropdown__popper {
+	// 	margin-left: -30px !important;
+	// }
 }
 
 .plugin {
@@ -76,9 +95,25 @@ const state = reactive({
 }
 
 .plugin.search {
-	.el-input {
-		display: none;
-		width: 100px;
+	display: flex;
+	justify-content: start;
+	align-items: center;
+	margin-right: 10px;
+
+	& :deep(.el-input) {
+		transition: width 0.3s ease;
 	}
+
+	& :deep(.el-input__inner) {
+		box-shadow: unset;
+		border-radius: 0px;
+		&:hover {
+			box-shadow: unset;
+		}
+	}
+}
+
+.searchInputIsFocuse {
+	box-shadow: 0 1px 0 0 #dcdfe6;
 }
 </style>
