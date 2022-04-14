@@ -1,16 +1,12 @@
 <template>
 	<!-- background-color="#304156" -->
-	<el-menu
-		:collapse="isCollapse"
-		router
-		:collapse-transition="false"
-		active-text-color="#409eff"
-		background-color="#304156"
-		:default-active="state.navBarActive"
-		text-color="#fff"
-		@open="handleOpen"
-		@close="handleClose"
-	>
+	<el-menu :collapse="isCollapse" router :collapse-transition="false" active-text-color="#409eff" background-color="#304156" :default-active="activeNavbar" text-color="#fff">
+		<el-menu-item index="dashboard">
+			<el-icon>
+				<document />
+			</el-icon>
+			<span>首页</span>
+		</el-menu-item>
 		<el-sub-menu index="1">
 			<template #title>
 				<el-icon>
@@ -27,7 +23,7 @@
 			</el-menu-item-group>
 			<el-sub-menu index="1-4">
 				<template #title>item four</template>
-				<el-menu-item index="1-4-1">item1</el-menu-item>
+				<el-menu-item index="1-4-1" @click="itemClick">item1</el-menu-item>
 			</el-sub-menu>
 		</el-sub-menu>
 		<el-menu-item index="3" disabled>
@@ -40,21 +36,16 @@
 </template>
 
 <script lang="ts" setup>
-import { reactive } from 'vue'
+import { useRouter } from 'vue-router'
 
 const props = defineProps<{
 	isCollapse: boolean
+	activeNavbar: string
 }>()
+const router = useRouter()
 
-const handleOpen = (key: string, keyPath: string[]) => {
-	// console.log(key, keyPath)
+const itemClick = (item: any) => {
+	router.push(item.index)
 }
-const handleClose = (key: string, keyPath: string[]) => {
-	// console.log(key, keyPath)
-}
-
-const state = reactive({
-	navBarActive: 'test',
-})
 </script>
 <style scoped></style>

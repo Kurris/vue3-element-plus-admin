@@ -59,8 +59,6 @@ const useSearch = () => {
 	if (state.inputFocus) {
 		state.inputWidth = 200
 		;(searchInput.value as any).focus()
-	} else {
-		state.inputWidth = 0
 	}
 }
 const inputBlur = () => {
@@ -74,10 +72,6 @@ const inputBlur = () => {
 	height: 50px;
 	justify-content: flex-end;
 	align-items: center;
-
-	// >>> .el-dropdown__popper {
-	// 	margin-left: -30px !important;
-	// }
 }
 
 .plugin {

@@ -4,7 +4,7 @@ import scanRoutes from './routes'
 const routes: RouteRecordRaw[] = [
 	{
 		path: '',
-		redirect: '/test',
+		redirect: '/dashboard',
 	},
 	...scanRoutes,
 ]

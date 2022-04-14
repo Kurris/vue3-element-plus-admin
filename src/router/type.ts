@@ -1,12 +1,11 @@
 import { RouteRecordRaw } from 'vue-router'
 import { Component } from 'vue'
+import RouteMeta from '@type/router/RouteMeta'
 
-interface RouteMeta {
-	title: string
-}
 
 declare interface AppRouteRecordRaw extends Omit<RouteRecordRaw, 'name'> {
-	name: string
+	name: string,
+	keepalive?:boolean,
 }
 
 declare interface AppRouteRecordRaw1 extends Omit<AppRouteRecordRaw, 'meta'> {
