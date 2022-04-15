@@ -18,10 +18,10 @@
 				<el-menu-item index="test1">test1</el-menu-item>
 				<el-menu-item index="test">test</el-menu-item>
 			</el-menu-item-group>
-			<el-menu-item-group title="Group Two">
-				<el-menu-item index="1-3">item3</el-menu-item>
+			<el-menu-item-group title="Group Two" disabled>
+				<el-menu-item index="1-3" disabled>item3</el-menu-item>
 			</el-menu-item-group>
-			<el-sub-menu index="1-4">
+			<el-sub-menu index="1-4" disabled>
 				<template #title>item four</template>
 				<el-menu-item index="1-4-1" @click="itemClick">item1</el-menu-item>
 			</el-sub-menu>

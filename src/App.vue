@@ -16,18 +16,23 @@
 				/>
 			</el-header>
 
-			<tab-bar :tabItems="state.tabItems" :activeTab="state.activeTab" @tabChange="tabChange" @tabRemove="tabRemove" />
+			<tab-bar :tabItems="state.tabItems" :activeTab="state.activeTab" @tabChange="tabChange" @tabRemove="tabRemove" @reload="reload" />
 			<el-main>
-				<!-- <router-link to="/test1">route link </router-link> -->
-				<router-view />
+				<router-view v-slot="{ Component }">
+					<keep-alive :include="['test']">
+						<transition name="fade" mode="out-in">
+							<component :is="Component" v-if="state.compontIsShow" :key="$route.name" />
+						</transition>
+					</keep-alive>
+				</router-view>
 			</el-main>
 		</el-container>
 	</el-container>
 </template>
 
 <script setup lang="ts">
-import { reactive, watch } from 'vue'
-import { onBeforeRouteUpdate, useRoute, useRouter } from 'vue-router'
+import { inject, nextTick, reactive, watch } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
 import NavBar from './components/layout/NavBar.vue'
 import HeaderBar from './components/layout/HeaderBar.vue'
 import TabBar from './components/layout/TabBar.vue'
@@ -36,6 +41,15 @@ import { TabPanelName } from 'element-plus'
 
 const route = useRoute()
 const router = useRouter()
+
+const reload = async () => {
+	console.log('reload')
+
+	state.compontIsShow = false
+	await nextTick(() => {
+		state.compontIsShow = true
+	})
+}
 
 let tabItems: TabItemType[] = [
 	{
@@ -49,6 +63,7 @@ let state = reactive({
 	isCollapse: false,
 	tabItems: Array<TabItemType>(...tabItems),
 	activeTab: 'dashboard',
+	compontIsShow: true,
 })
 
 watch(
@@ -109,5 +124,45 @@ const tabRemove = (tab: TabPanelName) => {
 	:hover {
 		overflow-y: auto !important;
 	}
+}
+
+.el-header {
+	height: 50px !important;
+	padding: 0 !important;
+}
+.el-container {
+	height: 100vh;
+}
+
+.el-aside {
+	overflow-x: hidden !important;
+	border: none;
+	background-color: var(--navbar-color);
+	transition: width 0.3s ease;
+	max-width: 210px !important;
+	box-shadow: 1px 0 0 #d8dce4 !important;
+}
+
+.el-menu {
+	height: 100% !important;
+	border: none !important;
+	max-width: 210px !important;
+}
+
+/* 渐变设置 */
+.fade-enter-from,
+.fade-leave-to {
+	transform: translateX(30px);
+	opacity: 0;
+}
+.fade-enter-to,
+.fade-leave-from {
+	opacity: 1;
+}
+.fade-enter-active {
+	transition: all 0.3s ease;
+}
+.fade-leave-active {
+	transition: all 0.3s cubic-bezier(1, 0.6, 0.6, 1);
 }
 </style>

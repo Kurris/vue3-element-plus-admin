@@ -34,27 +34,3 @@ body {
 ::-webkit-scrollbar-thumb:hover {
 	background-color: rgba(144, 147, 153, 0.3);
 }
-
-.el-container {
-	height: 100vh;
-}
-
-.el-header {
-	height: 50px !important;
-	padding: 0 !important;
-}
-
-.el-aside {
-	overflow-x: hidden !important;
-	border: none;
-	background-color: var(--navbar-color);
-	transition: width 0.3s ease;
-	max-width: 210px !important;
-	box-shadow: 1px 0 0 #d8dce4 !important;
-}
-
-.el-menu {
-	height: 100% !important;
-	border: none !important;
-	max-width: 210px !important;
-}

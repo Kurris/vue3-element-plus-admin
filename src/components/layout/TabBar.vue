@@ -1,25 +1,45 @@
 <template>
 	<div class="main-tabs">
-		<el-tabs v-model="activeTab" type="card" @tab-change="tabChange" @tab-remove="tabRemove">
-			<el-tab-pane v-for="item in tabItems" :key="item.name" :label="item.title" :name="item.name" :closable="item.closable">
-				<template #label>
-					<el-icon class="activeTabIcon">
-						<d-arrow-right />
-					</el-icon>
-					{{ item.title }}
-				</template>
-			</el-tab-pane>
-		</el-tabs>
+		<div class="left">
+			<el-tabs v-model="activeTab" type="card" @tab-change="tabChange" @tab-remove="tabRemove">
+				<el-tab-pane v-for="item in tabItems" :key="item.name" :label="item.title" :name="item.name" :closable="item.closable">
+					<template #label>
+						<el-icon class="activeTabIcon">
+							<d-arrow-right />
+						</el-icon>
+						{{ item.title }}
+					</template>
+				</el-tab-pane>
+			</el-tabs>
+		</div>
 
-		<div class="tabOperation">
-			<div class="refresh is-o">刷新</div>
-			<div class="dropDown is-o">下拉</div>
+		<div class="op">
+			<div class="is-o dropDown" @click="showDropdown">
+				<el-dropdown ref="dropdownOp" trigger="click" class="line-height: 36px;">
+					<el-icon style="height: 12px; width: 12px">
+						<caret-bottom />
+					</el-icon>
+					<template #dropdown>
+						<el-dropdown-menu>
+							<el-dropdown-item command="personalZoom">关闭当前</el-dropdown-item>
+							<el-dropdown-item command="logout">关闭其他</el-dropdown-item>
+							<el-dropdown-item command="dashboard" divided>关闭所有</el-dropdown-item>
+						</el-dropdown-menu>
+					</template>
+				</el-dropdown>
+				<span style="font-size: 12px; line-height: 36px; margin-left: 5px">页签操作</span>
+			</div>
+			<div class="refresh is-o" @click="$emit('reload')">
+				<el-icon><refresh /></el-icon>
+				<span style="margin-left: 5px">刷新</span>
+			</div>
 		</div>
 	</div>
 </template>
 <script lang="ts" setup>
 import TabItemType from '@type/components/layout/TabItemType'
 import { TabPanelName } from 'element-plus'
+import { ref, provide } from 'vue'
 
 const props = defineProps<{
 	tabItems: TabItemType[]
@@ -29,10 +49,20 @@ const props = defineProps<{
 const emit = defineEmits<{
 	(e: 'tabChange', activeTab: TabPanelName): void
 	(e: 'tabRemove', tab: TabPanelName): void
+	(e: 'reload'): void
 }>()
 
 const tabChange = (activeTab: TabPanelName) => emit('tabChange', activeTab)
 const tabRemove = (tab: TabPanelName) => emit('tabRemove', tab)
+
+let dropdownOp = ref()
+const showDropdown = () => {
+	dropdownOp.value.handleOpen()
+}
+
+provide('reload', () => {
+	return Math.random()
+})
 </script>
 
 <style scoped lang="scss">
@@ -41,6 +71,7 @@ $height: 36px;
 .main-tabs {
 	display: flex;
 	justify-content: space-between;
+
 	height: $height;
 	border: none;
 	box-shadow: 0 1px 4px #c1c1c1;
@@ -50,9 +81,6 @@ $height: 36px;
 	}
 
 	:deep(.el-tabs) {
-		// display: flex;
-		// justify-content: center;
-		// align-items: center;
 		border: none !important;
 		margin-left: 10px !important ;
 
@@ -113,21 +141,27 @@ $height: 36px;
 		}
 	}
 
-	.tabOperation {
+	.op {
 		display: flex;
 		justify-content: space-between;
 		align-items: center;
-		width: 38px * 2;
 		height: $height;
-		margin-left: 10px;
-		margin-right: 10px;
-		background-color: antiquewhite;
+		font-size: 12px;
+		color: #606266;
+		width: 150px;
 
 		.is-o {
-			line-height: $height;
+			padding-left: 10px;
+			padding-right: 10px;
 			height: $height;
-			width: $height;
-			background-color: white;
+			border-left: 1px solid #dadada;
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+			line-height: $height;
+			:hover {
+				cursor: pointer;
+			}
 		}
 	}
 }

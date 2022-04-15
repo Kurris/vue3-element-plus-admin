@@ -6,6 +6,8 @@ import 'element-plus/dist/index.css'
 import * as icons from '@element-plus/icons-vue'
 
 import 'normalize.css'
+import 'nprogress/nprogress.css'
+
 import router from './router/index'
 
 var app = createApp(App)
