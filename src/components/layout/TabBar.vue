@@ -154,14 +154,15 @@ $height: 36px;
 			padding-left: 10px;
 			padding-right: 10px;
 			height: $height;
-			border-left: 1px solid #dadada;
 			display: flex;
 			align-items: center;
 			justify-content: space-between;
 			line-height: $height;
-			:hover {
-				cursor: pointer;
-			}
+		}
+
+		div:hover {
+			cursor: pointer;
+			background-color: #f2f2f2;
 		}
 	}
 }
