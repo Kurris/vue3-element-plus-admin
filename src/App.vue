@@ -1,64 +1,62 @@
 <template>
-	<el-container>
-		<el-aside :class="{ setAsideWidth: state.isCollapse }">
-			<div style="height: 50px; background-color: #2b2f3a; line-height: 50px; padding-left: 10px; color: white">品牌</div>
+	<el-container ref="app">
+		<div style="">
+			<div class="brand">
+				品牌
+			</div>
 			<nav-bar :isCollapse="state.isCollapse" :activeNavbar="state.activeTab" />
-		</el-aside>
+		</div>
 
 		<el-container>
-			<el-header>
-				<header-bar
-					@set-collapse="setCollapse"
-					:breads="[
-						{ name: 'ligy', path: '/test/son' },
-						{ name: 'ligy', path: '/test/son' },
-					]"
-				/>
+			<el-header style="height: 50px !important;padding: 0 !important;">
+				<header-bar @set-collapse="setCollapse" :breads="[
+					{
+						path: 'test',
+						name: 'test',
+					},
+				]" :isCollapse="state.isCollapse" />
 			</el-header>
 
-			<tab-bar :tabItems="state.tabItems" :activeTab="state.activeTab" @tabChange="tabChange" @tabRemove="tabRemove" @reload="reload" />
+			<tab-bar :tabItems="state.tabItems" :activeTab="state.activeTab" @tabChange="tabChange"
+				@tabRemove="tabRemove" @reload="reload" @tabRemoveAll="tabRemoveAll"
+				@tabRemoveCurrent="tabRemoveCurrent" @tabRemoveOther="tabRemoveOther" />
 			<el-main>
-				<router-view v-slot="{ Component }">
-					<keep-alive :include="['test']">
-						<transition name="fade" mode="out-in">
-							<component :is="Component" v-if="state.compontIsShow" :key="$route.name" />
-						</transition>
+				<transition name="fade" mode="out-in">
+					<keep-alive v-if="state.compontIsShow">
+						<router-view v-slot="{ Component }">
+							<component :is="Component" :key="$route.name" />
+						</router-view>
 					</keep-alive>
-				</router-view>
+				</transition>
 			</el-main>
 		</el-container>
 	</el-container>
 </template>
 
 <script setup lang="ts">
-import { inject, nextTick, reactive, watch } from 'vue'
-import { useRoute, useRouter } from 'vue-router'
+import { nextTick, reactive, watch, ref } from 'vue'
+import { useRouter } from 'vue-router'
 import NavBar from './components/layout/NavBar.vue'
 import HeaderBar from './components/layout/HeaderBar.vue'
 import TabBar from './components/layout/TabBar.vue'
 import TabItemType from '@type/components/layout/TabItemType'
 import { TabPanelName } from 'element-plus'
+import appRoute from './router/type'
+import { computed } from '@vue/reactivity'
 
-const route = useRoute()
-const router = useRouter()
 
-const reload = async () => {
-	console.log('reload')
+import { ElMessage } from 'element-plus'
 
-	state.compontIsShow = false
-	await nextTick(() => {
-		state.compontIsShow = true
-	})
-}
+import { useResizeObserver } from '@vueuse/core'
 
 let tabItems: TabItemType[] = [
 	{
 		title: '首页',
 		name: 'dashboard',
-		closable: false,
+		path: '/dashboard',
+		closable: false
 	},
 ]
-
 let state = reactive({
 	isCollapse: false,
 	tabItems: Array<TabItemType>(...tabItems),
@@ -66,18 +64,39 @@ let state = reactive({
 	compontIsShow: true,
 })
 
-watch(
-	() => [route.path, route.meta, route.name],
-	to => {
-		let path: any = to[0]
-		let meta: any = to[1]
-		let name: any = to[2]
+const app = ref(null)
 
-		let existsItem = state.tabItems.find(x => x.name === name)
+useResizeObserver(app, entries => {
+	const entry = entries[0]
+	const { width } = entry.contentRect
+	state.isCollapse = width <= 750
+})
+
+const router = useRouter()
+
+const reload = async () => {
+
+
+	state.compontIsShow = false
+	await nextTick(() => {
+		state.compontIsShow = true
+	})
+}
+
+// const breads = computed(() => {
+// 	let matched = router.currentRoute.value.matched
+// })
+
+watch(
+	() => router.currentRoute.value,
+	newValue => {
+		let appRoute = newValue as any as appRoute
+		let existsItem = state.tabItems.find(x => x.name === appRoute.name)
 		if (!existsItem) {
 			existsItem = {
-				title: meta.title,
-				name: name,
+				title: appRoute.meta.title!,
+				name: appRoute.name,
+				path: appRoute.path,
 				closable: true,
 			}
 			state.tabItems.push(existsItem)
@@ -93,10 +112,14 @@ const setCollapse = (isCollapse: boolean) => {
 const tabChange = (activeTab: TabPanelName) => {
 	state.activeTab = activeTab.toString()
 
-	let path = state.tabItems.find(x => x.name == state.activeTab)!.name
-	router.replace({
-		path: path,
-	})
+	let existsItem = state.tabItems.find(x => x.name == state.activeTab)
+	if (existsItem) {
+		let path = existsItem.path
+		router.push({
+			path: path,
+		})
+	}
+
 }
 
 const tabRemove = (tab: TabPanelName) => {
@@ -109,60 +132,57 @@ const tabRemove = (tab: TabPanelName) => {
 		state.activeTab = state.tabItems[i].name
 	}
 }
+
+const tabRemoveOther = () => {
+	let i = state.tabItems.findIndex(x => x.name == state.activeTab)
+	//不是最后一个
+	if (i != state.tabItems.length - 1) {
+		state.tabItems.splice(i + 1, state.tabItems.length - 1 - i)
+	}
+
+
+	if (i != 0 && i != 1) {
+		state.tabItems.splice(1, i - 1)
+	}
+	ElMessage.success('移除其他页签')
+}
+const tabRemoveAll = () => {
+	state.tabItems.splice(1, state.tabItems.length - 1)
+	state.activeTab = state.tabItems[0].name
+	ElMessage.success('移除所有页签')
+}
+const tabRemoveCurrent = () => {
+	let i = state.tabItems.findIndex(x => x.name == state.activeTab)
+	if (i > 0) {
+		let item = state.tabItems[i]
+		if (item.closable) {
+			state.tabItems.splice(i, 1)
+
+			if (state.tabItems.length <= i) {
+				i--
+			}
+			state.activeTab = state.tabItems[i].name
+		}
+	}
+	ElMessage.success('移除当前页签')
+}
+
+
 </script>
 
 <style lang="scss">
-@use './styles/global.scss' as *;
+@use './styles/global.scss'as *;
 
-.setAsideWidth {
-	width: 65px !important;
-}
-
-.el-aside {
-	overflow-y: hidden !important;
-
-	:hover {
-		overflow-y: auto !important;
-	}
+.brand {
+	height: 50px;
+	background-color: #2b2f3a;
+	line-height: 50px;
+	padding-left: 10px;
+	color: white
 }
 
-.el-header {
-	height: 50px !important;
-	padding: 0 !important;
-}
-.el-container {
-	height: 100vh;
-}
 
-.el-aside {
-	overflow-x: hidden !important;
-	border: none;
-	background-color: var(--navbar-color);
-	transition: width 0.3s ease;
-	max-width: 210px !important;
-	box-shadow: 1px 0 0 #d8dce4 !important;
-}
-
-.el-menu {
-	height: 100% !important;
-	border: none !important;
-	max-width: 210px !important;
-}
-
-/* 渐变设置 */
-.fade-enter-from,
-.fade-leave-to {
-	transform: translateX(30px);
-	opacity: 0;
-}
-.fade-enter-to,
-.fade-leave-from {
-	opacity: 1;
-}
-.fade-enter-active {
-	transition: all 0.3s ease;
-}
-.fade-leave-active {
-	transition: all 0.3s cubic-bezier(1, 0.6, 0.6, 1);
+.el-main {
+	overflow: hidden !important;
 }
 </style>

@@ -10,16 +10,16 @@
 	</el-card>
 </template>
 
-<script setup lang="ts" name="test">
-import { onBeforeMount, onBeforeUnmount } from 'vue'
+<script lang="ts">
+export default {
+	name: 'test',
+}
+</script>
 
-onBeforeMount(() => {
-	console.log('before mount')
-})
+<script setup lang="ts">
+import { onBeforeMount, onBeforeUnmount, onActivated } from 'vue'
 
-onBeforeUnmount(() => {
-	console.log('before unmount')
-})
+
 </script>
 
 <style>

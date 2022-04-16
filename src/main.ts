@@ -2,11 +2,13 @@ import { createApp } from 'vue'
 import App from './App.vue'
 
 import ElementPlus from 'element-plus'
-import 'element-plus/dist/index.css'
+
 import * as icons from '@element-plus/icons-vue'
 
 import 'normalize.css'
 import 'nprogress/nprogress.css'
+import 'element-plus/dist/index.css'
+import './styles/popper.scss'
 
 import router from './router/index'
 

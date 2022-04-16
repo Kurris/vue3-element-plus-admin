@@ -1,0 +1,15 @@
+.mainTabDropdown.el-popper{
+    margin-left: 26px !important;
+
+    .el-popper__arrow{
+        margin-left: -26px;
+    }
+}
+
+.topRight.el-popper{
+     margin-left: -10px !important;
+
+    .el-popper__arrow{
+        margin-left: 22px;
+    } 
+}

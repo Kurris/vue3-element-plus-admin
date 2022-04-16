@@ -20,7 +20,7 @@
 		</div>
 
 		<div class="plugin">
-			<el-dropdown trigger="click">
+			<el-dropdown trigger="click" popper-class="topRight">
 				<span class="el-dropdown-link">
 					<el-avatar shape="square" :size="40" src="https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif?imageView2/1/w/80/h/80" />
 

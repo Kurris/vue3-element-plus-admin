@@ -1,9 +1,9 @@
 <template>
 	<div class="main-header">
 		<div class="left">
-			<el-icon class="navBarStatusIcon" @click="setCollapse">
-				<fold v-show="state.isCollapse" />
-				<expand v-show="!state.isCollapse" />
+			<el-icon class="navBarStatusIcon" @click="$emit('setCollapse', !isCollapse)">
+				<fold v-show="isCollapse" />
+				<expand v-show="!isCollapse" />
 			</el-icon>
 
 			<div class="breadCrumb">
@@ -22,30 +22,19 @@
 </template>
 
 <script setup lang="ts">
-import { reactive } from 'vue'
 import TopRight from './TopRight.vue'
 
 interface breadRecord {
 	name: string
 	path: string
 }
-
-let state = reactive({
-	isCollapse: false,
-})
-
-const props = defineProps<{
+defineProps<{
 	breads: breadRecord[]
+	isCollapse: boolean
 }>()
-
-const emit = defineEmits<{
+defineEmits<{
 	(e: 'setCollapse', isCollapse: boolean): void
 }>()
-
-const setCollapse = () => {
-	state.isCollapse = !state.isCollapse
-	emit('setCollapse', state.isCollapse)
-}
 </script>
 
 <style scoped lang="scss">
