@@ -38,20 +38,38 @@ body {
 
 
 
+/* 动画 */
+.slide-fade {
+	position: absolute;
+	left: 0;
+	right: 0;
+}
 
-/* 渐变设置 */
-.fade-enter-from,
-.fade-leave-to {
-	transform: translateX(20px);
+.slide-fade-enter-active {
+	transition: all 0.8s ease;
+}
+
+.slide-fade-leave-active {
+	transition: all 0.5s cubic-bezier(2, 0.5, 0.8, 1);
+}
+
+.slide-fade-enter-from,
+.slide-fade-leave-to {
+	transform: translateX(50px);
 	opacity: 0;
 }
 
-.fade-enter-to,
-.fade-leave-from {
-	opacity: 1;
+
+//
+.list-enter-active{
+	transition: transform 0.3s ease, opacity 0.3s ease;
+}
+.list-leave-active {
+	opacity: 0;
 }
 
-.fade-enter-active,
-.fade-leave-active {
-	transition: all 0.5s ease;
+.list-enter-from ,
+.list-leave-to {
+	opacity: 0;
+	transform: translateX(-20%);
 }

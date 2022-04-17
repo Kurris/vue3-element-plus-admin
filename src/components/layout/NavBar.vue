@@ -1,8 +1,8 @@
 <template>
 	<el-scrollbar>
 		<el-menu :collapse="isCollapse" router active-text-color="#409eff" background-color="#304156"
-			:default-active="$route.path" text-color="white" class="el-menu-vertical">
-			<template v-for="item in state.items">
+			:default-active="$route.path" text-color="white" class="el-menu-vertical" @select="select">
+			<template v-for="item in items">
 				<menu-tree :item="item" />
 			</template>
 		</el-menu>
@@ -10,40 +10,29 @@
 </template>
 
 <script lang="ts" setup>
-import { reactive } from 'vue';
 import MenuTree from './MenuTree.vue'
 
 defineProps<{
 	isCollapse: boolean
 	activeNavbar: string
+	items: IMenuItem[]
 }>()
 
-const arr = [
-	{
-		displayName: "首页",
-		route: "/dashboard",
-		icon: "view",
-		children: [],
-	},
-	{
-		displayName: "测试",
-		route: "/test",
-		icon: "view",
-		children: [
-			{
-				displayName: "测试子节点",
-				route: "/test/son",
-				icon: "view",
-				children: [],
-			}
-		],
-	}
-]
 
+const emits = defineEmits<{
+	(e: 'selectIndex', indexPaths: string[]): void
+}>()
 
-const state = reactive({
-	items: arr
-})
+interface IMenuItem {
+	displayName: string,
+	route: string,
+	icon: string,
+	children: IMenuItem[]
+}
+
+const select = (_: string, indexPaths: string[]) => {
+	emits("selectIndex", indexPaths)
+}
 
 </script>
 <style scoped lang="scss">

@@ -7,14 +7,22 @@
 			</el-icon>
 
 			<div class="breadCrumb">
+
 				<el-breadcrumb separator="/">
-					<template v-for="item in breads">
-						<el-breadcrumb-item :to="{ path: item.path }">{{ item.name }}</el-breadcrumb-item>
-					</template>
+					<transition-group name="list" mode="out-in">
+						<template v-for="(item, index) in breads">
+							<el-breadcrumb-item v-if="index == breads.length - 1">
+								<b style="color: black;">{{ item }}</b>
+							</el-breadcrumb-item>
+							<el-breadcrumb-item v-else>
+								{{ item }}
+							</el-breadcrumb-item>
+						</template>
+					</transition-group>
 				</el-breadcrumb>
+
 			</div>
 		</div>
-
 		<div class="right">
 			<top-right />
 		</div>
@@ -24,12 +32,9 @@
 <script setup lang="ts">
 import TopRight from './TopRight.vue'
 
-interface breadRecord {
-	name: string
-	path: string
-}
+
 defineProps<{
-	breads: breadRecord[]
+	breads: string[]
 	isCollapse: boolean
 }>()
 defineEmits<{

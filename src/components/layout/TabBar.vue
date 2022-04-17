@@ -1,18 +1,16 @@
 <template>
 	<div class="main-tabs">
-		<div class="left">
-			<el-tabs v-model="activeTab" type="card" @tab-change="tabChange" @tab-remove="tabRemove">
-				<el-tab-pane v-for="item in tabItems" :key="item.name" :label="item.title" :name="item.name"
-					:closable="item.closable">
-					<template #label>
-						<el-icon class="activeTabIcon">
-							<football />
-						</el-icon>
-						{{ item.title }}
-					</template>
-				</el-tab-pane>
-			</el-tabs>
-		</div>
+		<el-tabs v-model="activeTab" type="card" @tab-change="tabChange" @tab-remove="tabRemove">
+			<el-tab-pane v-for="item in tabItems" :key="item.name" :label="item.title" :name="item.name"
+				:closable="item.closable">
+				<template #label>
+					<el-icon class="activeTabIcon">
+						<football />
+					</el-icon>
+					{{ item.title }}
+				</template>
+			</el-tab-pane>
+		</el-tabs>
 
 		<div class="op">
 			<div class="is-o dropDown" @click="showDropdown">
@@ -41,7 +39,7 @@
 	</div>
 </template>
 <script lang="ts" setup>
-import TabItemType from '@type/components/layout/TabItemType'
+import TabItemType from '@type/components/layout/ITabItem'
 import { TabPanelName } from 'element-plus'
 import { ref } from 'vue'
 
@@ -87,10 +85,10 @@ $height: 36px;
 .main-tabs {
 	display: flex;
 	justify-content: space-between;
-
 	height: $height;
 	border: none;
 	box-shadow: 0 1px 4px #c1c1c1;
+
 
 	.activeTabIcon {
 		display: none;
@@ -99,6 +97,7 @@ $height: 36px;
 	:deep(.el-tabs) {
 		border: none !important;
 		margin-left: 10px !important;
+		width: 90%;
 
 		.el-tabs__header {
 			border: none;
@@ -108,6 +107,19 @@ $height: 36px;
 				border: none;
 				border: none;
 				box-shadow: none;
+
+				// is-disabled
+				.el-tabs__nav-next {
+					height: $height;
+					line-height: 28px;
+					border-left: 1px solid #f1f1f1;
+				}
+
+				.el-tabs__nav-prev {
+					height: $height;
+					line-height: 28px;
+					border-right: 1px solid #f1f1f1;
+				}
 
 				.is-top {
 					border: unset !important;
@@ -162,13 +174,14 @@ $height: 36px;
 	}
 
 	.op {
+		position: absolute;
+		right: 0;
 		display: flex;
 		justify-content: space-between;
 		align-items: center;
 		height: $height;
 		font-size: 12px;
 		color: #606266;
-		width: 150px;
 
 		.is-o {
 			padding-left: 10px;
@@ -183,6 +196,7 @@ $height: 36px;
 		div:hover {
 			cursor: pointer;
 			background-color: #f2f2f2;
+			color: #409eff;
 		}
 	}
 }
