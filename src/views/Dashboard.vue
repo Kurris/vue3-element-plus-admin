@@ -1,38 +1,58 @@
 <template>
-	<el-pagination small background v-model:currentPage="currentPage4" v-model:page-size="pageSize4"
-		:page-sizes="[100, 200, 300, 400]" :small="small" :disabled="disabled" :background="background"
-		layout="total, sizes, prev, pager, next, jumper" :total="400" @size-change="handleSizeChange"
-		@current-change="handleCurrentChange" />
+	<div>
+		<Table request-url="https://localhost:5001/weatherforecast/weatherforecast" :columns="[{
+			prop: 'date',
+			lable: '日期'
+		}, {
+			prop: 'summary',
+			lable: '地址',
+			slotName: 'summary'
+		}, {
+			prop: 'temperatureC',
+			lable: '摄氏度'
+		}, {
+			prop: 'temperatureF',
+			lable: '华氏度'
+		}, {
+			slotName: 'op',
+			prop: ''
+		}]">
+
+			<template #summary="{ scope }">
+				<el-tag>{{ scope.row.summary }}</el-tag>
+			</template>
+
+
+			<template #op>
+				<el-button type="text" size="small">Detail</el-button>
+				<el-button type="text" size="small">Edit</el-button>
+			</template>
+
+			<template #opHeader>
+				<el-input placeholder="search" />
+			</template>
+
+		</Table>
+
+
+	</div>
 </template>
 
 <script setup lang="ts">
-import { onBeforeMount, onActivated, ref } from 'vue'
+import { onBeforeMount, onActivated, ref, reactive } from 'vue'
 import { test } from '../net/api/test'
+import testResponse from '@/net/type/test/testResponse';
+import Table from '@/components/ui/Table.vue';
 
-const currentPage1 = ref(5)
-const currentPage2 = ref(5)
-const currentPage3 = ref(5)
-const currentPage4 = ref(4)
-const pageSize2 = ref(100)
-const pageSize3 = ref(100)
-const pageSize4 = ref(100)
-const small = ref(false)
-const background = ref(false)
-const disabled = ref(false)
 
-const handleSizeChange = (val: number) => {
-	console.log(`${val} items per page`)
-}
-const handleCurrentChange = (val: number) => {
-	console.log(`current page: ${val}`)
-}
+
+const state = reactive({
+	tableData: Array<testResponse>()
+})
 
 
 onBeforeMount(async () => {
-	let res = await test({
-		a: 'ligy22222'
-	})
-	console.log(res);
+
 
 })
 onActivated(() => console.log('actived'))

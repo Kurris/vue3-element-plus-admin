@@ -166,7 +166,14 @@ $height: 36px;
 					}
 
 					.el-icon.activeTabIcon {
-						bottom: -1px;
+						bottom: 0.5px;
+
+						svg {
+							background-color: white;
+							border-radius: 50px;
+							height: 8px;
+							width: 8px;
+						}
 					}
 				}
 			}

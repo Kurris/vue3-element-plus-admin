@@ -1,28 +1,40 @@
 <template>
 	<div class="main-topRight">
 		<div :class="{ searchInputIsFocuse: state.inputFocus, plugin: true, search: true }">
-			<el-icon @click="useSearch"><search /></el-icon>
-			<el-input ref="searchInput" :style="{ width: state.inputWidth + 'px' }" v-model="state.input" placeholder="内容搜索" @blur="inputBlur" clearable />
+			<el-icon @click="useSearch">
+				<search />
+			</el-icon>
+			<el-input ref="searchInput" :style="{ width: state.inputWidth + 'px' }" v-model="state.input"
+				placeholder="内容搜索" @blur="inputBlur" clearable />
 		</div>
 
 		<div class="plugin">
-			<el-icon><message /></el-icon>
+			<el-icon>
+				<message />
+			</el-icon>
 		</div>
 
 		<div class="plugin" @click="toggle">
 			<el-tooltip :content="isFullscreen ? '退出全屏' : '全屏'" placement="bottom" effect="dark">
-				<el-icon><full-screen /></el-icon>
+				<el-icon>
+					<full-screen />
+				</el-icon>
 			</el-tooltip>
 		</div>
 
 		<div class="plugin">
-			<el-icon><lock /></el-icon>
+			<el-icon>
+				<lock />
+			</el-icon>
 		</div>
 
 		<div class="plugin">
 			<el-dropdown trigger="click" popper-class="topRight">
 				<span class="el-dropdown-link">
-					<el-avatar shape="square" :size="40" src="https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif?imageView2/1/w/80/h/80" />
+					<!-- https://pica.zhimg.com/v2-ebbc55687b5760ab321d4f0190e014dc_xl.jpg?source=32738c0c -->
+					<!-- https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif?imageView2/1/w/80/h/80 -->
+					<el-avatar shape="square" :size="40"
+						src="https://pica.zhimg.com/v2-ebbc55687b5760ab321d4f0190e014dc_xl.jpg?source=32738c0c" />
 
 					<el-icon style="margin-left: 10px">
 						<caret-bottom />
@@ -58,7 +70,7 @@ const useSearch = () => {
 
 	if (state.inputFocus) {
 		state.inputWidth = 200
-		;(searchInput.value as any).focus()
+			; (searchInput.value as any).focus()
 	}
 }
 const inputBlur = () => {
@@ -78,7 +90,8 @@ const inputBlur = () => {
 	&:hover {
 		cursor: pointer;
 	}
-	& + .plugin {
+
+	&+.plugin {
 		margin-left: 10px;
 		margin-right: 10px;
 	}
@@ -101,6 +114,7 @@ const inputBlur = () => {
 	& :deep(.el-input__inner) {
 		box-shadow: unset;
 		border-radius: 0px;
+
 		&:hover {
 			box-shadow: unset;
 		}

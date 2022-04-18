@@ -1,29 +1,35 @@
 <template>
-	<el-container ref="app">
-		<div>
-			<div class="brand">品牌</div>
-			<nav-bar :isCollapse="state.isCollapse" :activeNavbar="state.activeTab" :items="state.navItems" />
-		</div>
+	<div>
+		<el-container ref="app">
+			<div>
+				<div class="brand">品牌</div>
+				<nav-bar :isCollapse="state.isCollapse" :activeNavbar="state.activeTab" :items="state.navItems" />
+			</div>
 
-		<el-container>
-			<el-header>
-				<header-bar @set-collapse="setCollapse" :breads="state.breads" :isCollapse="state.isCollapse" />
-			</el-header>
+			<el-container>
+				<el-header>
+					<header-bar @set-collapse="setCollapse" :breads="state.breads" :isCollapse="state.isCollapse" />
+				</el-header>
 
-			<tab-bar :tabItems="state.tabItems" :activeTab="state.activeTab" @tabChange="tabChange"
-				@tabRemove="tabRemove" @reload="reload" @tabRemoveAll="tabRemoveAll"
-				@tabRemoveCurrent="tabRemoveCurrent" @tabRemoveOther="tabRemoveOther" />
-			<el-main>
-				<router-view v-slot="{ Component }">
-					<transition name="slide-fade" mode="out-in">
-						<keep-alive :include="['test2']" v-if="state.compontIsShow">
-							<component :is="Component" :key="$route.name" />
-						</keep-alive>
-					</transition>
-				</router-view>
-			</el-main>
+				<tab-bar :tabItems="state.tabItems" :activeTab="state.activeTab" @tabChange="tabChange"
+					@tabRemove="tabRemove" @reload="reload" @tabRemoveAll="tabRemoveAll"
+					@tabRemoveCurrent="tabRemoveCurrent" @tabRemoveOther="tabRemoveOther" />
+				<el-main>
+					<el-card style="height: 88vh;">
+						<el-config-provider :locale="zhCN">
+							<router-view v-slot="{ Component }">
+								<transition name="slide-fade" mode="out-in">
+									<keep-alive :include="['test2']" v-if="state.compontIsShow">
+										<component :is="Component" />
+									</keep-alive>
+								</transition>
+							</router-view>
+						</el-config-provider>
+					</el-card>
+				</el-main>
+			</el-container>
 		</el-container>
-	</el-container>
+	</div>
 </template>
 
 <script setup lang="ts">
@@ -39,6 +45,7 @@ import { ElMessage } from 'element-plus'
 import { useResizeObserver } from '@vueuse/core'
 import ITabItem from '@type/components/layout/ITabItem'
 import IMenuItem from '@type/components/layout/IMenuItem'
+import zhCN from 'element-plus/lib/locale/lang/zh-cn'
 
 let tabItems: ITabItem[] = [
 	{
@@ -125,6 +132,7 @@ watch(
 	}
 )
 
+//note:链表反转算法
 const findItem = (path: string, items: IMenuItem[]) => {
 	let result: string[] = []
 	for (let index = 0; index < items.length; index++) {

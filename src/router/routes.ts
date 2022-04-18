@@ -11,6 +11,4 @@ Object.keys(modules).forEach(key => {
 	routes.push(...modList)
 })
 
-console.log(routes)
-
 export default routes

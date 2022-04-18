@@ -1,4 +1,5 @@
 import axios, { AxiosPromise, AxiosRequestConfig, AxiosResponse } from 'axios'
+import { ElNotification } from 'element-plus'
 import NProgress from 'nprogress'
 import BaseResponse from './type/BaseResponse'
 
@@ -41,12 +42,16 @@ const requestFunction = <TUserResponse>(config: AxiosRequestConfig): AxiosPromis
 
 			//网络异常
 			if (error.message == 'Network Error') {
+				ElNotification.error('网络异常')
 			} else if (error.response.status != 200) {
-				//
-				if (error.response.status == 400) {
+				if (error.response.status == 404) {
+					ElNotification.error('找不到请求地址')
+				} else if (error.response.status == 405) {
+					ElNotification.error('请求方法有误')
 				} else {
 				}
 			}
+
 			return error
 		}
 	)

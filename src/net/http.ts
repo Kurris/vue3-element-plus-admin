@@ -8,9 +8,14 @@ export default async <TUserResponse>(config: AxiosRequestConfig): Promise<TUserR
 	return new Promise(async (resolve, reject) => {
 		try {
 			let result = await requestFunction<TUserResponse>(config)
-			return resolve(result.data.data)
+
+			if (result.data != undefined) {
+				return resolve(result.data.data)
+			}
+
+			throw result
 		} catch (error) {
-			reject(error)
+			return reject(error)
 		}
 	})
 }
