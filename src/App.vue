@@ -1,29 +1,33 @@
 <template>
 	<el-container ref="app">
 		<div style="">
-			<div class="brand">
-				品牌
-			</div>
+			<div class="brand">品牌</div>
 			<nav-bar :isCollapse="state.isCollapse" :activeNavbar="state.activeTab" :items="state.navItems" />
 		</div>
 
 		<el-container>
-			<el-header style="height: 50px !important;padding: 0 !important;">
+			<el-header>
 				<header-bar @set-collapse="setCollapse" :breads="state.breads" :isCollapse="state.isCollapse" />
 			</el-header>
 
-			<tab-bar :tabItems="state.tabItems" :activeTab="state.activeTab" @tabChange="tabChange"
-				@tabRemove="tabRemove" @reload="reload" @tabRemoveAll="tabRemoveAll"
-				@tabRemoveCurrent="tabRemoveCurrent" @tabRemoveOther="tabRemoveOther" />
+			<tab-bar
+				:tabItems="state.tabItems"
+				:activeTab="state.activeTab"
+				@tabChange="tabChange"
+				@tabRemove="tabRemove"
+				@reload="reload"
+				@tabRemoveAll="tabRemoveAll"
+				@tabRemoveCurrent="tabRemoveCurrent"
+				@tabRemoveOther="tabRemoveOther"
+			/>
 			<el-main>
-
-				<transition name="slide-fade" mode="out-in">
-					<router-view v-slot="{ Component }">
+				<router-view v-slot="{ Component }">
+					<transition name="slide-fade" mode="out-in">
 						<keep-alive :include="['test2']" v-if="state.compontIsShow">
 							<component :is="Component" :key="$route.name" />
 						</keep-alive>
-					</router-view>
-				</transition>
+					</transition>
+				</router-view>
 			</el-main>
 		</el-container>
 	</el-container>
@@ -48,7 +52,7 @@ let tabItems: ITabItem[] = [
 		title: '首页',
 		name: 'dashboard',
 		path: '/dashboard',
-		closable: false
+		closable: false,
 	},
 ]
 let state = reactive({
@@ -57,35 +61,35 @@ let state = reactive({
 	activeTab: 'dashboard',
 	compontIsShow: true,
 	breads: Array<string>(),
-	navItems: Array<IMenuItem>(...[
-		{
-			displayName: "首页",
-			route: "/dashboard",
-			icon: "view",
-			children: [],
-		},
-		{
-			displayName: "测试",
-			route: "/test",
-			icon: "view",
-			children: [
-				{
-					displayName: "测试子节点",
-					route: "/test/son",
-					icon: "view",
-					children: [
-
-					],
-				}
-			],
-		},
-		{
-			displayName: "测试2",
-			route: "/test2",
-			icon: "view",
-			children: [],
-		},
-	])
+	navItems: Array<IMenuItem>(
+		...[
+			{
+				displayName: '首页',
+				route: '/dashboard',
+				icon: 'view',
+				children: [],
+			},
+			{
+				displayName: '测试',
+				route: '/test',
+				icon: 'view',
+				children: [
+					{
+						displayName: '测试子节点',
+						route: '/test/son',
+						icon: 'view',
+						children: [],
+					},
+				],
+			},
+			{
+				displayName: '测试2',
+				route: '/test2',
+				icon: 'view',
+				children: [],
+			},
+		]
+	),
 })
 
 const app = ref(null)
@@ -101,15 +105,13 @@ useResizeObserver(app, entries => {
 const router = useRouter()
 
 const reload = async () => {
-
-	console.log('reload');
+	console.log('reload')
 
 	state.compontIsShow = false
 	await nextTick(() => {
 		state.compontIsShow = true
 	})
 }
-
 
 watch(
 	() => router.currentRoute.value,
@@ -131,16 +133,15 @@ watch(
 )
 
 const findItem = (path: string, items: IMenuItem[]) => {
-
-	let result: string[] = [];
+	let result: string[] = []
 	for (let index = 0; index < items.length; index++) {
-		const item = items[index];
+		const item = items[index]
 		if (item.route == path) {
 			result.push(item.displayName)
 			return result
 		} else {
 			if (item.children && item.children.length > 0) {
-				let deepItems = (findItem(path, item.children) as unknown) as string[]
+				let deepItems = findItem(path, item.children) as unknown as string[]
 				if (deepItems && deepItems.length > 0) {
 					deepItems.push(item.displayName)
 					return deepItems
@@ -165,7 +166,6 @@ const tabChange = (activeTab: TabPanelName) => {
 			path: path,
 		})
 	}
-
 }
 
 const tabRemove = (tab: TabPanelName) => {
@@ -211,23 +211,25 @@ const tabRemoveCurrent = () => {
 	}
 	ElMessage.success('移除当前页签')
 }
-
-
 </script>
 
 <style lang="scss">
-@use './styles/global.scss'as *;
+@use './styles/global.scss' as *;
 
 .brand {
 	height: 50px;
 	background-color: #2b2f3a;
 	line-height: 50px;
 	padding-left: 10px;
-	color: white
+	color: white;
 }
-
 
 .el-main {
 	overflow: hidden !important;
+}
+
+.el-header {
+	height: 50px !important;
+	padding: 0 !important;
 }
 </style>
