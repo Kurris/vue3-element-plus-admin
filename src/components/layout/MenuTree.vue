@@ -43,7 +43,7 @@ li {
 
     &.el-menu-item {
         &.is-active {
-            border-right: 2px solid #409eff;
+            border-left: 2px solid #409eff;
         }
     }
 }
