@@ -1,5 +1,5 @@
 declare interface RouteMeta {
-	title: string
+	title?: string
 }
 
 export default RouteMeta

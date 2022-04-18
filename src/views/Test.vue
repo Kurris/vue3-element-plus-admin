@@ -1,43 +1,25 @@
 <template>
-	<el-card class="box-card">
-		<template #header>
-			<div class="card-header">
-				<span>test</span>
-				<el-button class="button" type="text">Operation button</el-button>
-			</div>
-		</template>
-		<div v-for="o in 4" :key="o" class="text item">{{ 'List item ' + o }}</div>
-	</el-card>
+	<div>
+		test
+	</div>
 </template>
 
-<script setup lang="ts" name="test">
-import { onBeforeMount, onBeforeUnmount } from 'vue'
+<script lang="ts">
+export default {
+	name: 'test',
+}
+</script>
+
+<script setup lang="ts">
+import { onBeforeMount, onActivated } from 'vue'
 
 onBeforeMount(() => {
-	console.log('before mount')
+	console.log('mounted');
 })
 
-onBeforeUnmount(() => {
-	console.log('before unmount')
-})
+onActivated(() => console.log('actived'))
+
 </script>
 
 <style>
-.card-header {
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
-}
-
-.text {
-	font-size: 14px;
-}
-
-.item {
-	margin-bottom: 18px;
-}
-
-.box-card {
-	width: 480px;
-}
 </style>

@@ -1,51 +1,48 @@
 <template>
-	<!-- background-color="#304156" -->
-	<el-menu :collapse="isCollapse" router :collapse-transition="false" active-text-color="#409eff" background-color="#304156" :default-active="activeNavbar" text-color="#fff">
-		<el-menu-item index="dashboard">
-			<el-icon>
-				<document />
-			</el-icon>
-			<span>首页</span>
-		</el-menu-item>
-		<el-sub-menu index="1">
-			<template #title>
-				<el-icon>
-					<location />
-				</el-icon>
-				<span>Navigator</span>
+	<el-scrollbar>
+		<el-menu :collapse="isCollapse" router active-text-color="#409eff" background-color="#304156"
+			:default-active="$route.path" text-color="white" class="el-menu-vertical" @select="select">
+			<template v-for="item in items">
+				<menu-tree :item="item" />
 			</template>
-			<el-menu-item-group title="Group One">
-				<el-menu-item index="test1">test1</el-menu-item>
-				<el-menu-item index="test">test</el-menu-item>
-			</el-menu-item-group>
-			<el-menu-item-group title="Group Two" disabled>
-				<el-menu-item index="1-3" disabled>item3</el-menu-item>
-			</el-menu-item-group>
-			<el-sub-menu index="1-4" disabled>
-				<template #title>item four</template>
-				<el-menu-item index="1-4-1" @click="itemClick">item1</el-menu-item>
-			</el-sub-menu>
-		</el-sub-menu>
-		<el-menu-item index="3" disabled>
-			<el-icon>
-				<document />
-			</el-icon>
-			<span>Navigator3</span>
-		</el-menu-item>
-	</el-menu>
+		</el-menu>
+	</el-scrollbar>
 </template>
 
 <script lang="ts" setup>
-import { useRouter } from 'vue-router'
+import MenuTree from './MenuTree.vue'
 
-const props = defineProps<{
+defineProps<{
 	isCollapse: boolean
 	activeNavbar: string
+	items: IMenuItem[]
 }>()
-const router = useRouter()
 
-const itemClick = (item: any) => {
-	router.push(item.index)
+
+const emits = defineEmits<{
+	(e: 'selectIndex', indexPaths: string[]): void
+}>()
+
+interface IMenuItem {
+	displayName: string,
+	route: string,
+	icon: string,
+	children: IMenuItem[]
 }
+
+const select = (_: string, indexPaths: string[]) => {
+	emits("selectIndex", indexPaths)
+}
+
 </script>
-<style scoped></style>
+<style scoped lang="scss">
+.el-menu-vertical:not(.el-menu--collapse) {
+	width: 210px;
+	min-height: 400px;
+}
+
+.el-menu {
+	height: 100vh;
+	border: none !important;
+}
+</style>

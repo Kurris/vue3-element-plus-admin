@@ -1,6 +1,6 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
 import scanRoutes from './routes'
-import nprogress from'nprogress'
+import nprogress from 'nprogress'
 
 const routes: RouteRecordRaw[] = [
 	{
@@ -10,17 +10,16 @@ const routes: RouteRecordRaw[] = [
 	...scanRoutes,
 ]
 
-
 const router = createRouter({
 	history: createWebHistory(),
 	routes: routes,
 })
 
-router.beforeEach(()=>{
+router.beforeEach(() => {
 	nprogress.start()
 })
 
-router.afterEach(()=>{
+router.afterEach(() => {
 	nprogress.done()
 })
 

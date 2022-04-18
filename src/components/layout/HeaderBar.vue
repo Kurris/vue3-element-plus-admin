@@ -1,20 +1,28 @@
 <template>
 	<div class="main-header">
 		<div class="left">
-			<el-icon class="navBarStatusIcon" @click="setCollapse">
-				<fold v-show="state.isCollapse" />
-				<expand v-show="!state.isCollapse" />
+			<el-icon class="navBarStatusIcon" @click="$emit('setCollapse', !isCollapse)">
+				<fold v-show="isCollapse" />
+				<expand v-show="!isCollapse" />
 			</el-icon>
 
 			<div class="breadCrumb">
+
 				<el-breadcrumb separator="/">
-					<template v-for="item in breads">
-						<el-breadcrumb-item :to="{ path: item.path }">{{ item.name }}</el-breadcrumb-item>
-					</template>
+					<transition-group name="list" mode="out-in">
+						<template v-for="(item, index) in breads">
+							<el-breadcrumb-item v-if="index == breads.length - 1">
+								<b style="color: black;">{{ item }}</b>
+							</el-breadcrumb-item>
+							<el-breadcrumb-item v-else>
+								{{ item }}
+							</el-breadcrumb-item>
+						</template>
+					</transition-group>
 				</el-breadcrumb>
+
 			</div>
 		</div>
-
 		<div class="right">
 			<top-right />
 		</div>
@@ -22,30 +30,16 @@
 </template>
 
 <script setup lang="ts">
-import { reactive } from 'vue'
 import TopRight from './TopRight.vue'
 
-interface breadRecord {
-	name: string
-	path: string
-}
 
-let state = reactive({
-	isCollapse: false,
-})
-
-const props = defineProps<{
-	breads: breadRecord[]
+defineProps<{
+	breads: string[]
+	isCollapse: boolean
 }>()
-
-const emit = defineEmits<{
+defineEmits<{
 	(e: 'setCollapse', isCollapse: boolean): void
 }>()
-
-const setCollapse = () => {
-	state.isCollapse = !state.isCollapse
-	emit('setCollapse', state.isCollapse)
-}
 </script>
 
 <style scoped lang="scss">
