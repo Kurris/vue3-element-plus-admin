@@ -9,6 +9,7 @@ import 'normalize.css'
 import 'nprogress/nprogress.css'
 import 'element-plus/dist/index.css'
 import './styles/popper.scss'
+import './styles/animation.scss'
 
 import router from './router/index'
 

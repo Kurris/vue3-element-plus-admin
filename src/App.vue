@@ -1,6 +1,6 @@
 <template>
 	<el-container ref="app">
-		<div style="">
+		<div>
 			<div class="brand">品牌</div>
 			<nav-bar :isCollapse="state.isCollapse" :activeNavbar="state.activeTab" :items="state.navItems" />
 		</div>
@@ -10,16 +10,9 @@
 				<header-bar @set-collapse="setCollapse" :breads="state.breads" :isCollapse="state.isCollapse" />
 			</el-header>
 
-			<tab-bar
-				:tabItems="state.tabItems"
-				:activeTab="state.activeTab"
-				@tabChange="tabChange"
-				@tabRemove="tabRemove"
-				@reload="reload"
-				@tabRemoveAll="tabRemoveAll"
-				@tabRemoveCurrent="tabRemoveCurrent"
-				@tabRemoveOther="tabRemoveOther"
-			/>
+			<tab-bar :tabItems="state.tabItems" :activeTab="state.activeTab" @tabChange="tabChange"
+				@tabRemove="tabRemove" @reload="reload" @tabRemoveAll="tabRemoveAll"
+				@tabRemoveCurrent="tabRemoveCurrent" @tabRemoveOther="tabRemoveOther" />
 			<el-main>
 				<router-view v-slot="{ Component }">
 					<transition name="slide-fade" mode="out-in">
@@ -214,7 +207,7 @@ const tabRemoveCurrent = () => {
 </script>
 
 <style lang="scss">
-@use './styles/global.scss' as *;
+@use './styles/global.scss'as *;
 
 .brand {
 	height: 50px;
