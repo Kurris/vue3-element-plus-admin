@@ -6,10 +6,13 @@
 	opacity: 0;
 }
 
-.list-enter-from,
+.list-enter-from {
+	opacity: 0;
+	transform: translateX(100px);
+}
 .list-leave-to {
 	opacity: 0;
-	transform: translateX(20%);
+	transform: translateX(100px);
 }
 
 //name=slide-fade

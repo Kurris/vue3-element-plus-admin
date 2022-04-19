@@ -1,18 +1,19 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
-import scanRoutes from './routes'
+import home from './AppRouteIndex'
+
 import nprogress from 'nprogress'
 
-const routes: RouteRecordRaw[] = [
+const routes = [
 	{
 		path: '',
-		redirect: '/dashboard',
+		redirect: '/index/dashboard',
 	},
-	...scanRoutes,
+	home,
 ]
 
 const router = createRouter({
 	history: createWebHistory(),
-	routes: routes,
+	routes: routes as unknown as RouteRecordRaw[],
 })
 
 router.beforeEach(() => {

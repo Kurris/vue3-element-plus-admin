@@ -1,7 +1,10 @@
 <template>
-    <el-pagination :disabled="disabled" small background v-model:currentPage="currentPage" v-model:page-size="pageSize"
-        :page-sizes="[10, 20, 50, 100]" layout="total, sizes, prev, pager, next, jumper" :total="total"
-        @size-change="handleSizeChange" @current-change="handleCurrentChange" style="font-weight: bold;" />
+    <div class="page">
+        <el-pagination :disabled="disabled" small background v-model:currentPage="currentPage"
+            v-model:page-size="pageSize" :page-sizes="[10, 20, 50, 100]"
+            layout="total, sizes, prev, pager, next, jumper" :total="total" @size-change="handleSizeChange"
+            @current-change="handleCurrentChange" />
+    </div>
 </template>
 <script lang="ts" setup>
 
@@ -33,5 +36,11 @@ const handleCurrentChange = async (val: number) => {
     disabled.value = false
 }
 </script>
-<style lang="ts" scoped>
+
+<style scoped lang="scss">
+.page {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 24px;
+}
 </style>

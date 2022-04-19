@@ -15,7 +15,6 @@
 			lable: '华氏度'
 		}, {
 			slotName: 'op',
-			prop: ''
 		}]">
 
 			<template #summary="{ scope }">
@@ -40,7 +39,7 @@
 
 <script setup lang="ts">
 import { onBeforeMount, onActivated, ref, reactive } from 'vue'
-import { test } from '../net/api/test'
+import { test } from '../../net/api/test'
 import testResponse from '@/net/type/test/testResponse';
 import Table from '@/components/ui/Table.vue';
 

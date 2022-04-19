@@ -28,6 +28,12 @@
       ],
       "@type/*": [
         "src/type.d/*"
+      ],
+      "@c/*": [
+        "src/components/*"
+      ],
+      "@s/*": [
+        "src/styles/*"
       ]
     }
   },

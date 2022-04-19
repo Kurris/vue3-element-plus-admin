@@ -39,21 +39,19 @@
 	</div>
 </template>
 <script lang="ts" setup>
-import TabItemType from '@type/components/layout/ITabItem'
+import ITabItem from '@type/components/layout/ITabItem'
 import { TabPanelName } from 'element-plus'
 import { ref } from 'vue'
 
 defineProps<{
-	tabItems: TabItemType[]
-	activeTab: string
+	tabItems: ITabItem[]
+	activeTab: string,
 }>()
 
 const emit = defineEmits<{
 	(e: 'tabChange', activeTab: TabPanelName): void
 	(e: 'tabRemove', tab: TabPanelName): void
-	(e: 'tabRemoveCurrent'): void
-	(e: 'tabRemoveOther'): void
-	(e: 'tabRemoveAll'): void
+	(e: 'tabRemoveAll' | 'tabRemoveOther' | 'tabRemoveCurrent'): void
 	(e: 'reload'): void
 }>()
 
@@ -65,15 +63,11 @@ const showDropdown = () => {
 	dropdownOp.value.handleOpen()
 }
 
-
-
 const handleCommand = (command: string) => {
-	if (command == 'tabRemoveAll') {
-		emit('tabRemoveAll')
-	} else if (command == 'tabRemoveCurrent') {
-		emit('tabRemoveCurrent')
-	} else if (command == 'tabRemoveOther') {
-		emit('tabRemoveOther')
+	if (command == 'tabRemoveAll'
+		|| command == 'tabRemoveCurrent'
+		|| command == 'tabRemoveOther') {
+		emit(`${command}`)
 	}
 }
 

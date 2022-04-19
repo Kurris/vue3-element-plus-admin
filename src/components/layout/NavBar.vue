@@ -2,8 +2,9 @@
 	<div class="main-menu">
 		<el-scrollbar>
 			<!-- background-color="#304156" -->
-			<el-menu :collapse="isCollapse" router active-text-color="#409eff" background-color="#304156"
-				:default-active="$route.path" text-color="white" class="el-menu-vertical" @select="select">
+			<el-menu :collapse="isCollapse" router :active-text-color="navActiveTextColor"
+				:background-color="backgroundColor" :default-active="$route.path" text-color="white"
+				class="el-menu-vertical" @select="select">
 				<template v-for="item in items">
 					<menu-tree :item="item" />
 				</template>
@@ -13,6 +14,7 @@
 </template>
 
 <script lang="ts" setup>
+import { ref } from 'vue';
 import MenuTree from './MenuTree.vue'
 
 defineProps<{
@@ -35,6 +37,19 @@ interface IMenuItem {
 const select = (_: string, indexPaths: string[]) => {
 	emits('selectIndex', indexPaths)
 }
+
+
+// 获取根元素
+var r = document.querySelector(':root')!;
+//获取根的样式（属性和值）
+var rs = getComputedStyle(r);
+//获取指定的变量
+let navBarColor = rs.getPropertyValue('--navbar-color')
+let activeTextColor = rs.getPropertyValue('--active-text-color')
+
+const backgroundColor = ref(navBarColor)
+const navActiveTextColor = ref(activeTextColor)
+
 </script>
 <style scoped lang="scss">
 .el-menu-vertical:not(.el-menu--collapse) {

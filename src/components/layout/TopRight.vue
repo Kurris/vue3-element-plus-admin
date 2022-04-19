@@ -81,7 +81,7 @@ const inputBlur = () => {
 <style scoped lang="scss">
 .main-topRight {
 	display: flex;
-	height: 50px;
+	height: var(--header-height);
 	justify-content: flex-end;
 	align-items: center;
 }

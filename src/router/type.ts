@@ -1,4 +1,4 @@
-import { RouteRecordRaw, RouteRecordRedirectOption } from 'vue-router'
+import { RouteRecordRaw } from 'vue-router'
 import RouteMeta from '@type/router/RouteMeta'
 
 declare interface AppRouteRecordRaw extends Omit<RouteRecordRaw, 'name'> {
@@ -14,4 +14,4 @@ declare interface AppRouteRecordRaw2 extends Omit<AppRouteRecordRaw1, 'children'
 	children?: AppRouteRecordRaw2[]
 }
 
-export default AppRouteRecordRaw2
+export type AppRoute = AppRouteRecordRaw2

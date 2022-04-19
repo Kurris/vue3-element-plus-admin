@@ -1,10 +1,11 @@
 <template>
-    <!-- stripe -->
-    <!-- border -->
+    <!--  -->
+    <!--  -->
 
     <el-empty v-if="total == 0" description="暂无数据" />
     <div v-else>
-        <el-table :data="data" stripe highlight-current-row v-loading="loading"
+        <el-table :data="data" :stripe="stripe || true" :border="border || true" stripe highlight-current-row
+            v-loading="loading"
             :header-cell-style="headerCellStyle || { backgroundColor: '#eef1f6', color: '#606266', fontWeight: 'bold' }"
             @current-change="rowChange">
             <template v-for="item in columns">
@@ -22,9 +23,7 @@
                 </el-table-column>
             </template>
         </el-table>
-        <div style="display: flex;justify-content: space-around;margin-top: 24px;">
-            <Pagination :load="load" :total="total"></Pagination>
-        </div>
+        <Pagination :load="load" :total="total"></Pagination>
     </div>
 
 </template>
@@ -35,17 +34,43 @@ import Pagination from './Pagination.vue'
 import http from '../../net/http';
 
 const props = defineProps<{
+    /**
+     * 表格列
+     */
     columns: IColumn[]
+
+    /**
+     * 请求地址
+    */
     requestUrl: string,
-    requestBody?: any,
-    headerCellStyle?: object
+
+    /**
+     * 请求参数
+    */
+    requestBody?: object,
+
+    /**
+     * 标题样式 
+     * @type {CSSProperty}
+    */
+    headerCellStyle?: object,
+
+    /**
+     * 斑马线
+    */
+    stripe?: boolean,
+
+    /**
+     * 边框
+    */
+    border?: boolean
 }>()
 
 const data = ref(Array<any>())
 const total = ref(0)
 const loading = ref(false)
 
-defineEmits<{
+const emits = defineEmits<{
     (e: 'rowChange', row: any, oldRow: any): void
 }>()
 
@@ -53,7 +78,7 @@ defineEmits<{
 /**
  * 选中行改变
  */
-const rowChange = (row: any, oldRow: any) => rowChange(row, oldRow)
+const rowChange = (row: any, oldRow: any) => emits('rowChange', row, oldRow)
 
 const load = async (pageIndex: number, pageSize: number) => {
     loading.value = true
@@ -78,11 +103,10 @@ const load = async (pageIndex: number, pageSize: number) => {
 }
 
 onBeforeMount(async () => {
+    console.log("actived");
     await load(1, 10)
 })
 
 </script>
-<style lang="ts" scoped>
-
-
+<style lang="scss" scoped>
 </style>

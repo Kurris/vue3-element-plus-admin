@@ -52,7 +52,7 @@ defineEmits<{
 		display: flex;
 
 		.navBarStatusIcon {
-			height: 50px;
+			height: var(--header-height);
 			width: 50px;
 		}
 
@@ -62,7 +62,7 @@ defineEmits<{
 
 		.breadCrumb {
 			display: flex;
-			height: 50px;
+			height: var(--header-height);
 			align-items: center;
 			justify-content: center;
 		}
