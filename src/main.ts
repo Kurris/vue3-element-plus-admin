@@ -24,5 +24,6 @@ for (const iconName in currentIcons) {
 	app.component(iconName, currentIcons[iconName])
 }
 
-app.use(router)
-app.mount('#app')
+console.log(`VITE_HTTP_BASEURL:${import.meta.env.VITE_HTTP_BASEURL}`)
+
+app.use(router).mount('#app')

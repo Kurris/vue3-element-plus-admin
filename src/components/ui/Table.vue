@@ -94,7 +94,6 @@ const load = async (pageIndex: number, pageSize: number) => {
             }
         })
 
-
         data.value = pageResponse.data || Array<any>()
         total.value = pageResponse.total || 0
     } finally {
