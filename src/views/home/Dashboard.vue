@@ -5,7 +5,7 @@
 			lable: '日期'
 		}, {
 			prop: 'summary',
-			lable: '地址',
+			lable: '摘要',
 			slotName: 'summary'
 		}, {
 			prop: 'temperatureC',
