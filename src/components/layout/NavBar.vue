@@ -53,15 +53,16 @@ const navActiveTextColor = ref(activeTextColor)
 </script>
 <style scoped lang="scss">
 .el-menu-vertical:not(.el-menu--collapse) {
-	width: 210px;
+	width: 285px;
 	min-height: 400px;
 }
 
 .el-menu {
 	height: 100vh;
 	border: none !important;
-
 }
+
+
 
 .main-menu {
 	box-shadow: 0px 2px 4px 0px #c1c1c1

@@ -1,5 +1,5 @@
 <template>
-    <el-menu-item v-if="!item.children || !item.children.length" :index="item.route">
+    <el-menu-item v-if="!item.children || !item.children.length" :index="item.route" v-ripple>
         <el-icon>
             <component :is="item.icon" />
         </el-icon>
@@ -32,9 +32,17 @@ defineProps<{
 
 </script>
 <style scoped lang="scss">
-:deep(.el-sub-menu__title) {
-    font-size: 14px !important;
-    color: #bfcbd9 !important;
+:deep() {
+    .el-sub-menu__title {
+
+        font-size: 14px !important;
+        color: black !important;
+
+        span,
+        svg {
+            color: #409eff;
+        }
+    }
 }
 
 li {
@@ -42,8 +50,20 @@ li {
     color: #bfcbd9;
 
     &.el-menu-item {
+        border-radius: 5px;
+        height: 40px;
+        margin-left: 2px;
+        margin-right: 2px;
+        color: black;
+
+        &:hover {
+            background-color: #f6f6f6 !important;
+        }
+
         &.is-active {
             border-left: 2px solid #409eff;
+            background-color: #e3edf8;
+            color: #409eff;
         }
     }
 }
