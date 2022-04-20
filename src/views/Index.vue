@@ -66,18 +66,18 @@ let state = reactive({
             {
                 displayName: '首页',
                 route: '首页',
-                icon: 'view',
+                icon: 'home-filled',
                 children: [
                     {
                         displayName: 'Dashboard',
                         route: '/index/dashboard',
-                        icon: 'view',
+                        icon: '',
                         children: [],
                     },
                     {
                         displayName: '个人中心',
                         route: '/index/myzoom',
-                        icon: 'view',
+                        icon: '',
                         children: [],
                     },
                 ],
@@ -130,18 +130,16 @@ watch(
 )
 
 const setBreads = (path: string) => {
-    let breads = findItem(path, state.navItems)
+    let breads: string[] = findItem(path, state.navItems)
     state.breads = breads.reverse()
 }
 
 //note:链表反转算法
 const findItem = (path: string, items: IMenuItem[]) => {
-    let result: string[] = []
     for (let index = 0; index < items.length; index++) {
         const item = items[index]
         if (item.route == path) {
-            result.push(item.displayName)
-            return result
+            return Array<string>(...[item.displayName])
         } else {
             if (item.children && item.children.length > 0) {
                 let deepItems = findItem(path, item.children) as unknown as string[]
@@ -152,7 +150,7 @@ const findItem = (path: string, items: IMenuItem[]) => {
             }
         }
     }
-    return result
+    return []
 }
 
 const setCollapse = (isCollapse: boolean) => {

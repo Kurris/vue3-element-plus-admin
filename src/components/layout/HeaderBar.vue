@@ -7,7 +7,6 @@
 			</el-icon>
 
 			<div class="breadCrumb">
-
 				<el-breadcrumb separator="/">
 					<transition-group name="list" mode="out-in">
 						<template v-for="(item, index) in breads">
@@ -31,7 +30,6 @@
 
 <script setup lang="ts">
 import TopRight from './TopRight.vue'
-
 
 defineProps<{
 	breads: string[]

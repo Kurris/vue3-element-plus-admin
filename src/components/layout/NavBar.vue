@@ -62,9 +62,7 @@ const navActiveTextColor = ref(activeTextColor)
 	border: none !important;
 }
 
-
-
 .main-menu {
-	box-shadow: 0px 2px 4px 0px #c1c1c1
+	box-shadow: 0px 1px 2px 0px #c1c1c1
 }
 </style>

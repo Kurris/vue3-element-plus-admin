@@ -1,11 +1,11 @@
 <template>
-    <el-menu-item v-if="!item.children || !item.children.length" :index="item.route" v-ripple>
+    <el-menu-item v-if="!item.children || !item.children.length" :index="item.route">
         <el-icon>
             <component :is="item.icon" />
         </el-icon>
         <span>{{ item.displayName }}</span>
     </el-menu-item>
-    <el-sub-menu v-else :index="item.route">
+    <el-sub-menu v-else :index="item.route" @click.stop="subMenuClick">
         <template #title>
             <el-icon>
                 <component :is="item.icon" />
@@ -20,6 +20,8 @@
     </el-sub-menu>
 </template>
  <script lang="ts">
+import Ripple from '@/directive/Ripple'
+
 export default {
     name: 'menuTree',
 }
@@ -30,18 +32,21 @@ defineProps<{
     item: any
 }>()
 
+const subMenuClick = (e: MouseEvent) => {
+    Ripple(e.target, e)
+}
+
 </script>
 <style scoped lang="scss">
-:deep() {
-    .el-sub-menu__title {
+:deep(.el-sub-menu__title) {
 
-        font-size: 14px !important;
-        color: black !important;
+    height: 40px;
+    font-size: 14px !important;
+    color: black !important;
 
-        span,
-        svg {
-            color: #409eff;
-        }
+    span,
+    svg {
+        color: #409eff;
     }
 }
 
@@ -55,6 +60,7 @@ li {
         margin-left: 2px;
         margin-right: 2px;
         color: black;
+        margin-bottom: 2px;
 
         &:hover {
             background-color: #f6f6f6 !important;
