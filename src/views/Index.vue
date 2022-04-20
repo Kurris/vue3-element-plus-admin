@@ -47,6 +47,7 @@ import { AppRoute } from '../router/type'
 import ITabItem from '@type/components/layout/ITabItem'
 import IMenuItem from '@type/components/layout/IMenuItem'
 import Brand from '../components/layout/Brand.vue'
+import http from '@/net/http'
 
 let state = reactive({
     isCollapse: false,//导航栏展开状态
@@ -61,33 +62,28 @@ let state = reactive({
     activeTab: 'dashboard',//默认选中的页签
     compontIsShow: true,//刷新
     breads: Array<string>(),//面包屑
-    navItems: Array<IMenuItem>(...
-        [
-            {
-                displayName: '首页',
-                route: '首页',
-                icon: 'home-filled',
-                children: [
-                    {
-                        displayName: 'Dashboard',
-                        route: '/index/dashboard',
-                        icon: '',
-                        children: [],
-                    },
-                    {
-                        displayName: '个人中心',
-                        route: '/index/myzoom',
-                        icon: '',
-                        children: [],
-                    },
-                ],
-            }
-        ]
-    ),//导航栏数据,树状
+    navItems: Array<IMenuItem>(...[
+        {
+            displayName: '首页',
+            route: '首页',
+            icon: 'home-filled',
+            children: [
+                {
+                    displayName: 'Dashboard',
+                    route: '/index/dashboard',
+                    icon: '',
+                    children: [],
+                },
+                {
+                    displayName: '个人中心',
+                    route: '/index/myzoom',
+                    icon: '',
+                    children: [],
+                },
+            ],
+        }
+    ]),//导航栏数据,树状
 })
-
-
-
 
 
 const app = ref(null)
@@ -211,7 +207,20 @@ const tabRemoveCurrent = () => {
     }
 }
 
-onBeforeMount(() => {
+onBeforeMount(async () => {
+
+    try {
+        let response = await http<Array<IMenuItem>>({
+            url: 'menus',
+            method: 'get',
+        });
+
+        state.navItems = response
+    } catch {
+
+    }
+
+
     setBreads('/index/dashboard')
 })
 </script>

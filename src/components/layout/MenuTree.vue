@@ -1,12 +1,12 @@
 <template>
     <el-menu-item v-if="!item.children || !item.children.length" :index="item.route">
-        <el-icon>
+        <el-icon v-if="item.icon">
             <component :is="item.icon" />
         </el-icon>
         <span>{{ item.displayName }}</span>
     </el-menu-item>
     <el-sub-menu v-else :index="item.route" @click.stop="subMenuClick">
-        <template #title>
+        <template #title v-if="item.icon">
             <el-icon>
                 <component :is="item.icon" />
             </el-icon>
