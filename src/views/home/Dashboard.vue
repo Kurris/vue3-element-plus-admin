@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<Table request-url="https://localhost:5001/weatherforecast/weatherforecast" :columns="[{
+		<Table request-url="weatherforecast/weatherforecast" :columns="[{
 			prop: 'date',
 			lable: '日期'
 		}, {
@@ -38,22 +38,10 @@
 </template>
 
 <script setup lang="ts">
-import { onBeforeMount, onActivated, ref, reactive } from 'vue'
-import { test } from '../../net/api/test'
-import testResponse from '@/net/type/test/testResponse';
+import { onActivated } from 'vue'
 import Table from '@/components/ui/Table.vue';
 
 
-
-const state = reactive({
-	tableData: Array<testResponse>()
-})
-
-
-onBeforeMount(async () => {
-
-
-})
 onActivated(() => console.log('actived'))
 </script>
 <style>
