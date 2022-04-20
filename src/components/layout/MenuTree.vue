@@ -33,7 +33,14 @@ defineProps<{
 }>()
 
 const subMenuClick = (e: MouseEvent) => {
-    Ripple(e.target, e)
+    let el = e.target as Element
+
+    // 找到item和header节点
+    while (!((el.hasAttribute("role") && el.getAttribute("role") === "menuitem") || el.classList.contains("el-sub-menu__title"))) {
+        el = el.parentElement!
+    }
+
+    Ripple(el, e)
 }
 
 </script>
