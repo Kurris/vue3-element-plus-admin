@@ -6,7 +6,7 @@
 <style lang="scss" scoped>
 .brand {
     height: var(--header-height);
-    background-color: #224b79;
+    background-color: #04699d;
     line-height: var(--header-height);
     padding-left: 10px;
     color: white;

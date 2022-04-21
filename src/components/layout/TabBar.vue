@@ -150,7 +150,7 @@ $height: 36px;
 
 					&.is-active {
 						color: white;
-						background-color: #2c4a75;
+						background-color: #04699d;
 						width: unset;
 					}
 
