@@ -11,4 +11,9 @@ const appRouteIndex: AppRoute = {
 	children: [...scanRoutes],
 }
 
+appRouteIndex.children!.push({
+	path: '',
+	redirect: '/index/dashboard',
+})
+
 export default appRouteIndex
