@@ -50,19 +50,12 @@ export const requestFunction = <TUserResponse>(config: MyRequestConfig): AxiosPr
 		},
 		error => {
 			NProgress.done()
-			console.log(useNotify)
 
 			//网络异常
 			if (error.message == 'Network Error' && config.useNotify) {
 				ElNotification.error('网络异常')
-			} else if (error.response.status != 200) {
-				if (error.response.status == 404 && config.useNotify) {
-					ElNotification.error('找不到请求地址')
-				} else if (error.response.status == 405 && config.useNotify) {
-					ElNotification.error('请求方法有误')
-				} else {
-				}
 			}
+			console.log(error)
 
 			return error
 		}
