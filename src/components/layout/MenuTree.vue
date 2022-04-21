@@ -1,12 +1,11 @@
 <template>
-    <el-menu-item v-if="(!item.children || !item.children.length) && (item.visiable == null || item.visiable)"
-        :index="item.route">
+    <el-menu-item v-if="(!item.children || !item.children.length) && item.visiable" :index="item.route">
         <el-icon v-if="item.icon">
             <component :is="item.icon" />
         </el-icon>
         <span>{{ item.displayName }}</span>
     </el-menu-item>
-    <el-sub-menu v-else :index="item.route" @click.stop="subMenuClick">
+    <el-sub-menu v-else-if="item.visiable" :index="item.route" @click.stop="subMenuClick">
         <template #title v-if="item.icon">
             <el-icon>
                 <component :is="item.icon" />
@@ -22,6 +21,7 @@
 </template>
  <script lang="ts">
 import Ripple from '@/directive/Ripple'
+import { IMenuItem } from '@type/components/layout/IMenuItem'
 
 export default {
     name: 'menuTree',
@@ -30,7 +30,7 @@ export default {
 <script setup lang="ts">
 
 defineProps<{
-    item: any
+    item: IMenuItem
 }>()
 
 const subMenuClick = (e: MouseEvent) => {

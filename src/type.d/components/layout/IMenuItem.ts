@@ -1,9 +1,7 @@
-declare interface IMenuItem {
+export interface IMenuItem {
 	displayName: string
 	route: string
 	icon: string
-	visiable?: boolean
+	visiable: boolean
 	children: IMenuItem[]
 }
-
-export default IMenuItem

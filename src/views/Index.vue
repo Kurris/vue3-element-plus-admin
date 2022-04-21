@@ -33,7 +33,7 @@
 </template>
 
 <script setup lang="ts">
-import { nextTick, reactive, watch, ref, onBeforeMount, onActivated, onMounted } from 'vue'
+import { nextTick, reactive, watch, ref, onBeforeMount } from 'vue'
 import { TabPanelName } from 'element-plus'
 import { useRoute, useRouter } from 'vue-router'
 import zhCN from 'element-plus/lib/locale/lang/zh-cn'
@@ -45,7 +45,7 @@ import TabBar from '@c/layout/TabBar.vue'
 
 import { AppRoute } from '../router/type'
 import ITabItem from '@type/components/layout/ITabItem'
-import IMenuItem from '@type/components/layout/IMenuItem'
+import { IMenuItem } from '@type/components/layout/IMenuItem'
 import Brand from '../components/layout/Brand.vue'
 import http from '@/net/http'
 
@@ -67,17 +67,20 @@ let state = reactive({
             displayName: '首页',
             route: '首页',
             icon: 'home-filled',
+            visiable: true,
             children: [
                 {
                     displayName: 'Dashboard',
                     route: '/index/dashboard',
                     icon: '',
+                    visiable: true,
                     children: [],
                 },
                 {
                     displayName: '个人中心',
                     route: '/index/myzoom',
                     icon: '',
+                    visiable: true,
                     children: [],
                 },
                 {

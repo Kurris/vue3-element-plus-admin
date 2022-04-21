@@ -21,10 +21,11 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, watch } from 'vue';
+import { ref, } from 'vue';
 import MenuTree from './MenuTree.vue'
+import { IMenuItem } from '@type/components/layout/IMenuItem'
 
-const props = defineProps<{
+defineProps<{
 	isCollapse: boolean
 	activeNavbar: string
 	items: IMenuItem[]
@@ -34,12 +35,6 @@ const emits = defineEmits<{
 	(e: 'selectIndex', indexPaths: string[]): void
 }>()
 
-interface IMenuItem {
-	displayName: string
-	route: string
-	icon: string
-	children: IMenuItem[]
-}
 
 const select = (_: string, indexPaths: string[]) => {
 	emits('selectIndex', indexPaths)
