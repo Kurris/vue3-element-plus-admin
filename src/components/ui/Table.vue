@@ -85,6 +85,7 @@ const load = async (pageIndex: number, pageSize: number) => {
 
     try {
         let pageResponse = await http<IPaginationResponse>({
+            useNotify: false,
             url: props.requestUrl,
             method: 'post',
             data: {

@@ -8,6 +8,10 @@ const routes = [
 		path: '',
 		redirect: '/index/dashboard',
 	},
+	{
+		path: '/:pathMatch(.*)',
+		redirect: '/index/404',
+	},
 	home,
 ]
 
@@ -16,8 +20,9 @@ const router = createRouter({
 	routes: routes as unknown as RouteRecordRaw[],
 })
 
-router.beforeEach(() => {
+router.beforeEach((to, from, next) => {
 	nprogress.start()
+	next()
 })
 
 router.afterEach(() => {

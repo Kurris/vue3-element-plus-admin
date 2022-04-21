@@ -1,7 +1,6 @@
-import { AxiosRequestConfig } from 'axios'
-import requestFunction from './index'
+import { requestFunction, MyRequestConfig } from './index'
 
-export default async <TUserResponse>(config: AxiosRequestConfig): Promise<TUserResponse> => {
+export default async <TUserResponse>(config: MyRequestConfig): Promise<TUserResponse> => {
 	config.timeout = 30 * 1000 //30sec
 	config.baseURL = import.meta.env.VITE_HTTP_BASEURL as string
 

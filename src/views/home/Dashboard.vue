@@ -21,7 +21,6 @@
 				<el-tag>{{ scope.row.summary }}</el-tag>
 			</template>
 
-
 			<template #op>
 				<el-button type="text" size="small">Detail</el-button>
 				<el-button type="text" size="small">Edit</el-button>

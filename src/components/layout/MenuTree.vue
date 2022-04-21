@@ -1,5 +1,6 @@
 <template>
-    <el-menu-item v-if="!item.children || !item.children.length" :index="item.route">
+    <el-menu-item v-if="(!item.children || !item.children.length) && (item.visiable == null || item.visiable)"
+        :index="item.route">
         <el-icon v-if="item.icon">
             <component :is="item.icon" />
         </el-icon>
@@ -36,11 +37,14 @@ const subMenuClick = (e: MouseEvent) => {
     let el = e.target as Element
 
     // 找到item和header节点
-    while (!((el.hasAttribute("role") && el.getAttribute("role") === "menuitem") || el.classList.contains("el-sub-menu__title"))) {
+    while (!((el.hasAttribute("role") && el.getAttribute("role") === "menuitem") && el.classList.contains("el-menu-item")
+        || el.classList.contains("el-sub-menu__title"))) {
+
         el = el.parentElement!
     }
-
-    Ripple(el, e)
+    if (el != undefined) {
+        Ripple(el, e)
+    }
 }
 
 </script>

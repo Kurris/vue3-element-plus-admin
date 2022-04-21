@@ -1,10 +1,21 @@
-import axios, { AxiosPromise, AxiosRequestConfig, AxiosResponse } from 'axios'
+import axios, { AxiosPromise, AxiosRequestConfig } from 'axios'
 import { ElNotification } from 'element-plus'
 import NProgress from 'nprogress'
 import BaseResponse from './type/BaseResponse'
 
-const requestFunction = <TUserResponse>(config: AxiosRequestConfig): AxiosPromise<BaseResponse<TUserResponse>> => {
+export interface MyRequestConfig extends AxiosRequestConfig {
+	/**
+	 * 是否使用右上通知
+	 */
+	useNotify?: boolean
+}
+
+export const requestFunction = <TUserResponse>(config: MyRequestConfig): AxiosPromise<BaseResponse<TUserResponse>> => {
 	const instance = axios.create()
+
+	if (config.useNotify == null) {
+		config.useNotify = true
+	}
 
 	instance.interceptors.request.use(config => {
 		NProgress.start()
@@ -39,14 +50,15 @@ const requestFunction = <TUserResponse>(config: AxiosRequestConfig): AxiosPromis
 		},
 		error => {
 			NProgress.done()
+			console.log(useNotify)
 
 			//网络异常
-			if (error.message == 'Network Error') {
+			if (error.message == 'Network Error' && config.useNotify) {
 				ElNotification.error('网络异常')
 			} else if (error.response.status != 200) {
-				if (error.response.status == 404) {
+				if (error.response.status == 404 && config.useNotify) {
 					ElNotification.error('找不到请求地址')
-				} else if (error.response.status == 405) {
+				} else if (error.response.status == 405 && config.useNotify) {
 					ElNotification.error('请求方法有误')
 				} else {
 				}
@@ -58,5 +70,3 @@ const requestFunction = <TUserResponse>(config: AxiosRequestConfig): AxiosPromis
 
 	return instance(config)
 }
-
-export default requestFunction

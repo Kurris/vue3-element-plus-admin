@@ -33,9 +33,9 @@
 </template>
 
 <script setup lang="ts">
-import { nextTick, reactive, watch, ref, onBeforeMount } from 'vue'
+import { nextTick, reactive, watch, ref, onBeforeMount, onActivated, onMounted } from 'vue'
 import { TabPanelName } from 'element-plus'
-import { useRouter } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import zhCN from 'element-plus/lib/locale/lang/zh-cn'
 import { useResizeObserver } from '@vueuse/core'
 
@@ -80,6 +80,13 @@ let state = reactive({
                     icon: '',
                     children: [],
                 },
+                {
+                    displayName: '404',
+                    route: '/index/404',
+                    icon: '',
+                    visiable: false,
+                    children: [],
+                }
             ],
         }
     ]),//导航栏数据,树状
@@ -108,6 +115,8 @@ const reload = async () => {
 watch(
     () => router.currentRoute.value,
     newValue => {
+        console.log(newValue);
+
         let appRoute = newValue as any as AppRoute
         let existsItem = state.tabItems.find(x => x.name === appRoute.name)
         if (!existsItem) {
@@ -207,10 +216,11 @@ const tabRemoveCurrent = () => {
     }
 }
 
+const route = useRoute()
 onBeforeMount(async () => {
-
     try {
         let response = await http<Array<IMenuItem>>({
+            useNotify: false,
             url: 'menus',
             method: 'get',
         });
@@ -220,9 +230,26 @@ onBeforeMount(async () => {
 
     }
 
-
-    setBreads('/index/dashboard')
+    if (route.name == '404') {
+        console.log(404);
+        let existsItem = state.tabItems.find(x => x.name == '404')
+        if (!existsItem) {
+            existsItem = {
+                title: '404',
+                name: '404',
+                path: '/index/404',
+                closable: true,
+            }
+            state.tabItems.push(existsItem)
+        }
+        state.activeTab = existsItem.name
+        setBreads('/index/404')
+    } else {
+        setBreads('/index/dashboard')
+    }
 })
+
+
 </script>
 
 <style lang="scss" >

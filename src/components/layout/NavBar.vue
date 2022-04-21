@@ -8,16 +8,23 @@
 				<template v-for="item in items">
 					<menu-tree :item="item" />
 				</template>
+				<li style="flex:1;"></li>
 			</el-menu>
+
 		</el-scrollbar>
+		<!-- <div :class="{ setting: true, widthL: !isCollapse, widthS: isCollapse }">
+			<el-icon>
+				<setting />
+			</el-icon>
+		</div> -->
 	</div>
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue';
+import { ref, watch } from 'vue';
 import MenuTree from './MenuTree.vue'
 
-defineProps<{
+const props = defineProps<{
 	isCollapse: boolean
 	activeNavbar: string
 	items: IMenuItem[]
@@ -37,6 +44,7 @@ interface IMenuItem {
 const select = (_: string, indexPaths: string[]) => {
 	emits('selectIndex', indexPaths)
 }
+
 
 
 // 获取根元素
@@ -64,5 +72,29 @@ const navActiveTextColor = ref(activeTextColor)
 
 .main-menu {
 	box-shadow: 0px 1px 2px 0px #c1c1c1
+}
+
+.widthL {
+	width: 285px;
+}
+
+.widthS {
+	width: 64px;
+}
+
+.setting {
+	transition: all 0.3s ease-in-out;
+	border-top: 1px solid whitesmoke;
+	background-color: white;
+	height: 64px;
+	position: fixed;
+	bottom: 0px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+
+	&:hover {
+		cursor: pointer;
+	}
 }
 </style>
