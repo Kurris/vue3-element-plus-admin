@@ -1,7 +1,7 @@
 <template>
     <div>
         <el-container ref="app">
-            <div>
+            <div v-show="!navStore.isHidden">
                 <brand></brand>
                 <nav-bar />
             </div>
@@ -11,7 +11,7 @@
                     <header-bar />
                 </el-header>
 
-                <tab-bar @reload="reload" />
+                <tab-bar @reload="reload" v-show="!tabStore.isHidden" />
 
                 <el-main>
                     <el-config-provider :locale="zhCN">
@@ -39,22 +39,26 @@ import HeaderBar from '@c/layout/HeaderBar.vue'
 import TabBar from '@c/layout/TabBar.vue'
 import Brand from '../components/layout/Brand.vue'
 
-import { useNavStore } from '@/stores/frameworkStore'
+import { useNavStore, useTabStore } from '@/stores/frameworkStore'
 
 let state = reactive({
     compontIsShow: true,//刷新
 })
 
 const navStore = useNavStore()
+const tabStore = useTabStore()
 
 const app = ref()
 
 useResizeObserver(app, entries => {
     const entry = entries[0]
     const { width } = entry.contentRect
-    if (width <= 750) {
-        navStore.$state.isCollapse = true
+    if (width <= 765) {
+        navStore.isCollapse = true
     }
+
+    navStore.isHidden = width <= 500
+    tabStore.isHidden = width <= 500
 })
 
 const reload = async () => {
@@ -68,9 +72,7 @@ const reload = async () => {
 
 </script>
 
-<style lang="scss" >
-@use '@s/global.scss'as *;
-
+<style lang="scss" scoped>
 .el-main {
     overflow: hidden !important;
 }

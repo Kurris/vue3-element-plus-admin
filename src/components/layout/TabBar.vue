@@ -42,13 +42,15 @@
 </template>
 <script lang="ts" setup>
 import { AppRoute } from '@/router/type';
-import { useHeaderStore } from '@/stores/frameworkStore';
+import { useHeaderStore, useTabStore } from '@/stores/frameworkStore';
 import ITabItem from '@type/components/layout/ITabItem'
 import { TabPanelName } from 'element-plus'
 import { onMounted, reactive, ref, watch, computed } from 'vue'
 import { useRouter, useRoute } from 'vue-router';
 
 const headerStore = useHeaderStore()
+const tabStore = useTabStore()
+
 const router = useRouter()
 const route = useRoute()
 
