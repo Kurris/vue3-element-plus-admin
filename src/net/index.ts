@@ -52,10 +52,13 @@ export const requestFunction = <TUserResponse>(config: MyRequestConfig): AxiosPr
 			NProgress.done()
 
 			//网络异常
-			if (error.message == 'Network Error' && config.useNotify) {
+			if (error.message == 'Network Error') {
 				ElNotification.error('网络异常')
+			} else {
+				if (error.response.status == 404) {
+					ElNotification.error('请求接口不存在')
+				}
 			}
-			console.log(error)
 
 			return error
 		}

@@ -2,43 +2,26 @@
 	<div class="main-menu">
 		<el-scrollbar>
 			<!-- background-color="#304156" -->
-			<el-menu :collapse="isCollapse" router :active-text-color="navActiveTextColor"
+			<el-menu :collapse="navStore.$state.isCollapse" router :active-text-color="navActiveTextColor"
 				:background-color="backgroundColor" :default-active="$route.path" text-color="white"
-				class="el-menu-vertical" @select="select">
-				<template v-for="item in items">
+				class="el-menu-vertical">
+				<template v-for="item in navStore.$state.items">
 					<menu-tree :item="item" />
 				</template>
 				<li style="flex:1;"></li>
 			</el-menu>
 
 		</el-scrollbar>
-		<!-- <div :class="{ setting: true, widthL: !isCollapse, widthS: isCollapse }">
-			<el-icon>
-				<setting />
-			</el-icon>
-		</div> -->
 	</div>
 </template>
 
 <script lang="ts" setup>
-import { ref, } from 'vue';
+import { ref, onBeforeMount } from 'vue';
 import MenuTree from './MenuTree.vue'
 import { IMenuItem } from '@type/components/layout/IMenuItem'
-
-defineProps<{
-	isCollapse: boolean
-	activeNavbar: string
-	items: IMenuItem[]
-}>()
-
-const emits = defineEmits<{
-	(e: 'selectIndex', indexPaths: string[]): void
-}>()
-
-
-const select = (_: string, indexPaths: string[]) => {
-	emits('selectIndex', indexPaths)
-}
+import http from '@/net/http';
+import { useNavStore } from '@/stores/frameworkStore';
+const navStore = useNavStore()
 
 
 
@@ -52,6 +35,53 @@ let activeTextColor = rs.getPropertyValue('--active-text-color')
 
 const backgroundColor = ref(navBarColor)
 const navActiveTextColor = ref(activeTextColor)
+
+
+onBeforeMount(async () => {
+
+	try {
+		var res = await http<Array<IMenuItem>>({
+			useNotify: false,
+			url: 'menus',
+			method: 'get',
+		})
+		navStore.$state.items = res
+	} catch {
+		navStore.$state.items = Array<IMenuItem>(...[
+			{
+				displayName: '首页',
+				route: '首页',
+				icon: 'home-filled',
+				visiable: true,
+				children: [
+					{
+						displayName: 'Dashboard',
+						route: '/index/dashboard',
+						icon: '',
+						visiable: true,
+						children: [],
+					},
+					{
+						displayName: '个人中心',
+						route: '/index/myzoom',
+						icon: '',
+						visiable: true,
+						children: [],
+					},
+					{
+						displayName: '404',
+						route: '/index/404',
+						icon: '',
+						visiable: false,
+						children: [],
+					}
+				],
+			}
+		])
+	}
+
+
+})
 
 </script>
 <style scoped lang="scss">
@@ -67,29 +97,5 @@ const navActiveTextColor = ref(activeTextColor)
 
 .main-menu {
 	box-shadow: 0px 1px 2px 0px #c1c1c1
-}
-
-.widthL {
-	width: 285px;
-}
-
-.widthS {
-	width: 64px;
-}
-
-.setting {
-	transition: all 0.3s ease-in-out;
-	border-top: 1px solid whitesmoke;
-	background-color: white;
-	height: 64px;
-	position: fixed;
-	bottom: 0px;
-	display: flex;
-	justify-content: center;
-	align-items: center;
-
-	&:hover {
-		cursor: pointer;
-	}
 }
 </style>

@@ -1,5 +1,6 @@
 import { createApp } from 'vue'
 import App from './App.vue'
+import { createPinia } from 'pinia'
 
 import ElementPlus from 'element-plus'
 
@@ -28,4 +29,4 @@ for (const iconName in currentIcons) {
 console.log(`VITE_HTTP_BASEURL:${import.meta.env.VITE_HTTP_BASEURL}`)
 
 directiveInstall(app)
-app.use(router).mount('#app')
+app.use(router).use(createPinia()).mount('#app')

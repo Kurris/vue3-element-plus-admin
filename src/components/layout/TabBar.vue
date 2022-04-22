@@ -1,7 +1,7 @@
 <template>
 	<div class="main-tabs">
-		<el-tabs v-model="activeTab" type="card" @tab-change="tabChange" @tab-remove="tabRemove">
-			<el-tab-pane v-for="item in tabItems" :key="item.name" :label="item.title" :name="item.name"
+		<el-tabs v-model="state.activeTab" type="card" @tab-change="tabChange" @tab-remove="tabRemove">
+			<el-tab-pane v-for="item in state.tabItems" :key="item.name" :label="item.title" :name="item.name"
 				:closable="item.closable">
 				<template #label>
 					<el-icon class="activeTabIcon">
@@ -39,37 +39,181 @@
 	</div>
 </template>
 <script lang="ts" setup>
+import { AppRoute } from '@/router/type';
+import { useHeaderStore } from '@/stores/frameworkStore';
 import ITabItem from '@type/components/layout/ITabItem'
 import { TabPanelName } from 'element-plus'
-import { ref } from 'vue'
+import { onMounted, reactive, ref, watch } from 'vue'
+import { useRouter } from 'vue-router';
 
-defineProps<{
-	tabItems: ITabItem[]
-	activeTab: string,
-}>()
+const headerStore = useHeaderStore()
+const router = useRouter()
 
-const emit = defineEmits<{
-	(e: 'tabChange', activeTab: TabPanelName): void
-	(e: 'tabRemove', tab: TabPanelName): void
-	(e: 'tabRemoveAll' | 'tabRemoveOther' | 'tabRemoveCurrent'): void
+let dropdownOp = ref()
+
+defineEmits<{
 	(e: 'reload'): void
 }>()
 
-const tabChange = (activeTab: TabPanelName) => emit('tabChange', activeTab)
-const tabRemove = (tab: TabPanelName) => emit('tabRemove', tab)
+const state = reactive({
+	activeTab: 'dashboard',
+	tabItems: Array<ITabItem>(...[
+		{
+			title: 'Dashboard',
+			name: 'dashboard',
+			path: '/index/dashboard',
+			closable: false,
+		},
+	]),
+})
 
-let dropdownOp = ref()
+/**
+ * 跳转到404
+*/
+const to404 = () => {
+	let existsItem = state.tabItems.find(x => x.name == '404')
+	if (!existsItem) {
+		existsItem = {
+			title: '404',
+			name: '404',
+			path: '/index/404',
+			closable: true,
+		}
+		state.tabItems.push(existsItem)
+	}
+	state.activeTab = existsItem.name
+}
+
+
+
+/**
+ * 主动展开下拉
+*/
 const showDropdown = () => {
 	dropdownOp.value.handleOpen()
 }
 
-const handleCommand = (command: string) => {
-	if (command == 'tabRemoveAll'
-		|| command == 'tabRemoveCurrent'
-		|| command == 'tabRemoveOther') {
-		emit(`${command}`)
+
+/**
+ * 切换tab
+*/
+const tabChange = (activeTab: TabPanelName) => {
+	state.activeTab = activeTab.toString()
+
+	let existsItem = state.tabItems.find(x => x.name == state.activeTab)
+	if (existsItem) {
+		let path = existsItem.path
+		router.push({
+			path: path,
+		})
 	}
 }
+
+/**
+ * 移除当前tab
+ */
+const tabRemove = (tab: TabPanelName) => {
+	let i = state.tabItems.findIndex(x => x.name == tab.toString())
+	if (i >= 0) {
+		state.tabItems.splice(i, 1)
+		if (state.tabItems.length <= i) {
+			i--
+		}
+		state.activeTab = state.tabItems[i].name
+	}
+}
+
+/**
+ * 下拉命令执行
+*/
+const handleCommand = (command: string) => {
+	if (command == 'tabRemoveAll') {
+		tabRemoveAll()
+	} else if (command == 'tabRemoveCurrent') {
+		tabRemoveCurrent()
+	} else {
+		tabRemoveOther()
+	}
+}
+
+/**
+ * 移除其他tab
+ */
+const tabRemoveOther = () => {
+	let i = state.tabItems.findIndex(x => x.name == state.activeTab)
+	//不是最后一个
+	if (i != state.tabItems.length - 1) {
+		state.tabItems.splice(i + 1, state.tabItems.length - 1 - i)
+	}
+
+	if (i != 0 && i != 1) {
+		state.tabItems.splice(1, i - 1)
+	}
+}
+
+/**
+ * 移除所有tab
+ */
+const tabRemoveAll = () => {
+	state.tabItems.splice(1, state.tabItems.length - 1)
+	state.activeTab = state.tabItems[0].name
+}
+
+/**
+ * 移除当前tab
+ */
+const tabRemoveCurrent = () => {
+	let i = state.tabItems.findIndex(x => x.name == state.activeTab)
+	if (i > 0) {
+		let item = state.tabItems[i]
+		if (item.closable) {
+			state.tabItems.splice(i, 1)
+
+			if (state.tabItems.length <= i) {
+				i--
+			}
+			state.activeTab = state.tabItems[i].name
+		}
+	}
+}
+
+/**
+ * 添加tab
+ */
+const addOrLocateTab = (appRoute: AppRoute) => {
+	let existsItem = state.tabItems.find(x => x.name == appRoute.name)
+	if (!existsItem) {
+		existsItem = {
+			title: appRoute.meta!.title!,
+			name: appRoute.name!,
+			path: appRoute.path,
+			closable: true,
+		}
+		state.tabItems.push(existsItem)
+	}
+	state.activeTab = existsItem.name
+	headerStore.$state.setBreads(existsItem.path)
+}
+
+/**
+ * 监视路由变化(导航栏切换),添加或者定位到当前tab
+ */
+watch(
+	() => router.currentRoute.value,
+	newValue => {
+		let appRoute = newValue as any as AppRoute
+		addOrLocateTab(appRoute)
+	}
+)
+
+onMounted(() => {
+	if (router.currentRoute.value.name == '404') {
+		to404()
+		headerStore.$state.setBreads('/index/404')
+	} else {
+		addOrLocateTab(router.currentRoute.value as any as AppRoute)
+	}
+})
 
 </script>
 

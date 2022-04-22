@@ -37,11 +37,8 @@
 </template>
 
 <script setup lang="ts">
-import { onActivated } from 'vue'
 import Table from '@/components/ui/Table.vue';
 
-
-onActivated(() => console.log('actived'))
 </script>
 <style>
 </style>

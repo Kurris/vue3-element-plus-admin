@@ -1,7 +1,4 @@
 <template>
-    <!--  -->
-    <!--  -->
-
     <el-empty v-if="total == 0" description="暂无数据" />
     <div v-else>
         <el-table :data="data" :stripe="stripe || true" :border="border || true" stripe highlight-current-row
@@ -97,13 +94,14 @@ const load = async (pageIndex: number, pageSize: number) => {
 
         data.value = pageResponse.data || Array<any>()
         total.value = pageResponse.total || 0
+    } catch (err) {
+        console.log(err + '\r\n' + 'request url:' + props.requestUrl);
     } finally {
         loading.value = false
     }
 }
 
 onBeforeMount(async () => {
-    console.log("actived");
     await load(1, 10)
 })
 

@@ -1,16 +1,16 @@
 <template>
 	<div class="main-header">
 		<div class="left">
-			<el-icon class="navBarStatusIcon" @click="$emit('setCollapse', !isCollapse)">
-				<fold v-show="isCollapse" />
-				<expand v-show="!isCollapse" />
+			<el-icon class="navBarStatusIcon" @click="navStore.$state.isCollapse = !navStore.$state.isCollapse">
+				<fold v-show="navStore.$state.isCollapse" />
+				<expand v-show="!navStore.$state.isCollapse" />
 			</el-icon>
 
 			<div class="breadCrumb">
 				<el-breadcrumb separator="/">
 					<transition-group name="list" mode="out-in">
-						<template v-for="(item, index) in breads">
-							<el-breadcrumb-item v-if="index == breads.length - 1">
+						<template v-for="(item, index) in state.breads">
+							<el-breadcrumb-item v-if="index == state.breads.length - 1">
 								<b style="color: black;">{{ item }}</b>
 							</el-breadcrumb-item>
 							<el-breadcrumb-item v-else>
@@ -29,15 +29,53 @@
 </template>
 
 <script setup lang="ts">
+import { IMenuItem } from '@/type.d/components/layout/IMenuItem';
+import { onBeforeMount, reactive } from 'vue';
 import TopRight from './TopRight.vue'
 
-defineProps<{
-	breads: string[]
-	isCollapse: boolean
-}>()
-defineEmits<{
-	(e: 'setCollapse', isCollapse: boolean): void
-}>()
+import { useNavStore, useHeaderStore } from '@/stores/frameworkStore';
+const navStore = useNavStore()
+const headerStore = useHeaderStore()
+
+
+const state = reactive({
+	breads: Array<string>()
+})
+
+
+//note:链表反转算法
+const findItem = (path: string, items: IMenuItem[]) => {
+	for (let index = 0; index < items.length; index++) {
+		const item = items[index]
+		if (item.route == path) {
+			return Array<string>(...[item.displayName])
+		} else {
+			if (item.children && item.children.length > 0) {
+				let deepItems = findItem(path, item.children) as unknown as string[]
+				if (deepItems && deepItems.length > 0) {
+					deepItems.push(item.displayName)
+					return deepItems
+				}
+			}
+		}
+	}
+	return []
+}
+
+onBeforeMount(() => {
+	console.log('header beforemount');
+
+	headerStore.$state.setBreads = (path: string) => {
+		let searchBreads: string[] = findItem(path, navStore.$state.items)
+		state.breads = searchBreads.reverse()
+		if (state.breads.length == 0) {
+			setTimeout(() => {
+				headerStore.$state.setBreads(path)
+			}, 200)
+		}
+	}
+})
+
 </script>
 
 <style scoped lang="scss">
