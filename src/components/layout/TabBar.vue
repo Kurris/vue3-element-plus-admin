@@ -21,9 +21,11 @@
 					</el-icon>
 					<template #dropdown>
 						<el-dropdown-menu>
-							<el-dropdown-item command="tabRemoveCurrent">关闭当前</el-dropdown-item>
-							<el-dropdown-item command="tabRemoveOther">关闭其他</el-dropdown-item>
-							<el-dropdown-item command="tabRemoveAll" divided>关闭所有</el-dropdown-item>
+							<el-dropdown-item command="tabRemoveCurrent" :disabled="$route.path == '/index/dashboard'">
+								关闭当前</el-dropdown-item>
+							<el-dropdown-item command="tabRemoveOther" :disabled="!closeOther">关闭其他</el-dropdown-item>
+							<el-dropdown-item command="tabRemoveAll" :disabled="!closeAll" divided>关闭所有
+							</el-dropdown-item>
 						</el-dropdown-menu>
 					</template>
 				</el-dropdown>
@@ -43,11 +45,12 @@ import { AppRoute } from '@/router/type';
 import { useHeaderStore } from '@/stores/frameworkStore';
 import ITabItem from '@type/components/layout/ITabItem'
 import { TabPanelName } from 'element-plus'
-import { onMounted, reactive, ref, watch } from 'vue'
-import { useRouter } from 'vue-router';
+import { onMounted, reactive, ref, watch, computed } from 'vue'
+import { useRouter, useRoute } from 'vue-router';
 
 const headerStore = useHeaderStore()
 const router = useRouter()
+const route = useRoute()
 
 let dropdownOp = ref()
 
@@ -194,6 +197,17 @@ const addOrLocateTab = (appRoute: AppRoute) => {
 	state.activeTab = existsItem.name
 	headerStore.$state.setBreads(existsItem.path)
 }
+
+
+const closeOther = computed(() => {
+	if (state.tabItems.length == 1) return false
+
+	if (state.tabItems.length == 2 && state.activeTab == route.name && state.activeTab != "dashboard") return false
+
+	return true;
+})
+
+const closeAll = computed(() => state.tabItems.length > 1)
 
 /**
  * 监视路由变化(导航栏切换),添加或者定位到当前tab

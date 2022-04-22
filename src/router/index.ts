@@ -20,9 +20,10 @@ const router = createRouter({
 	routes: routes as unknown as RouteRecordRaw[],
 })
 
-router.beforeEach((to, from, next) => {
+router.beforeEach(guard => {
 	nprogress.start()
-	next()
+
+	document.title = ('App : ' + guard.meta.title) as string
 })
 
 router.afterEach(() => {

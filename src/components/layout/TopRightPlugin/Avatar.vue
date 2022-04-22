@@ -13,15 +13,20 @@
             </span>
             <template #dropdown>
                 <el-dropdown-menu>
-                    <el-dropdown-item command="myzoom">个人中心</el-dropdown-item>
-                    <el-dropdown-item command="dashboard">首页</el-dropdown-item>
+                    <el-dropdown-item command="dashboard" :disabled="$route.path == '/index/dashboard'">首页
+                    </el-dropdown-item>
+                    <el-dropdown-item command="myzoom" :disabled="$route.path == '/index/myzoom'">个人中心
+                    </el-dropdown-item>
+                    <el-dropdown-item command="mysetting">设置
+                    </el-dropdown-item>
                     <el-dropdown-item command="logout" divided>退出登录</el-dropdown-item>
                 </el-dropdown-menu>
             </template>
         </el-dropdown>
     </div>
 </template>
-<script lang="ts" setup>import { useRouter } from 'vue-router';
+<script lang="ts" setup>
+import { useRouter } from 'vue-router';
 
 
 const router = useRouter()
@@ -30,6 +35,10 @@ const avatarCommand = (cmd: string) => {
     if (cmd == "myzoom") {
         router.push({
             path: '/index/myzoom'
+        })
+    } else if (cmd == "dashboard") {
+        router.push({
+            path: '/index/dashboard'
         })
     }
 }

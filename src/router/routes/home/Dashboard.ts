@@ -5,7 +5,7 @@ const dashboard: AppRoute = {
 	component: () => import('@views/home/Dashboard.vue'),
 	name: 'dashboard',
 	meta: {
-		title: '首页',
+		title: 'dashboard',
 	},
 }
 

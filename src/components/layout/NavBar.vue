@@ -3,7 +3,7 @@
 		<el-scrollbar>
 			<!-- background-color="#304156" -->
 			<el-menu :collapse="navStore.$state.isCollapse" router :active-text-color="navActiveTextColor"
-				:background-color="backgroundColor" :default-active="$route.path" text-color="white"
+				:background-color="backgroundColor" :default-active="$route.path" text-color="black"
 				class="el-menu-vertical">
 				<template v-for="item in navStore.$state.items">
 					<menu-tree :item="item" />
@@ -96,6 +96,6 @@ onBeforeMount(async () => {
 }
 
 .main-menu {
-	box-shadow: 0px 1px 2px 0px #c1c1c1
+	box-shadow: 0px 1px 4px 0px #c1c1c1
 }
 </style>

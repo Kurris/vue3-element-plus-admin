@@ -6,8 +6,8 @@
         <span>{{ item.displayName }}</span>
     </el-menu-item>
     <el-sub-menu v-else-if="item.visiable" :index="item.route" @click.stop="subMenuClick">
-        <template #title v-if="item.icon">
-            <el-icon>
+        <template #title>
+            <el-icon v-if="item.icon">
                 <component :is="item.icon" />
             </el-icon>
             <span>{{ item.displayName }}</span>
@@ -49,15 +49,18 @@ const subMenuClick = (e: MouseEvent) => {
 
 </script>
 <style scoped lang="scss">
-:deep(.el-sub-menu__title) {
+.el-sub-menu {
+    &.is-opened {
+        .el-sub-menu__title {
+            height: 40px;
+            font-size: 14px !important;
+            color: black !important;
 
-    height: 40px;
-    font-size: 14px !important;
-    color: black !important;
-
-    span,
-    svg {
-        color: #409eff;
+            span,
+            svg {
+                color: #409eff;
+            }
+        }
     }
 }
 
