@@ -18,7 +18,7 @@ import directiveInstall from './directive/Index'
 var app = createApp(App)
 
 //引用element plus
-app.use(ElementPlus, { size: 'default', zIndex: 3000 })
+app.use(ElementPlus, { size: 'small', zIndex: 3000 })
 
 //引用全局图标
 let currentIcons: any = icons

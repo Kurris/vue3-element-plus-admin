@@ -35,6 +35,11 @@ export interface IColumn {
 	 * 是否可见
 	 */
 	visiable?: boolean
+
+	/**
+	 * 是否可编辑
+	 */
+	editable?: boolean
 }
 
 export interface IPaginationResponse {

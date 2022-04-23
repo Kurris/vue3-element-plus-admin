@@ -1,15 +1,16 @@
 <template>
 	<div>
-		<Table request-url="weatherforecast/weatherforecast" :columns="[{
+		<Table row-key="date" request-url="weatherforecast/weatherforecast" :columns="[{
 			prop: 'date',
-			lable: '日期'
+			lable: '日期',
 		}, {
 			prop: 'summary',
 			lable: '摘要',
-			slotName: 'summary'
+			slotName: 'summary',
 		}, {
 			prop: 'temperatureC',
-			lable: '摄氏度'
+			lable: '摄氏度',
+			editable: true
 		}, {
 			prop: 'temperatureF',
 			lable: '华氏度'
@@ -21,18 +22,15 @@
 				<el-tag>{{ scope.row.summary }}</el-tag>
 			</template>
 
-			<template #op>
-				<el-button type="text" size="small">Detail</el-button>
-				<el-button type="text" size="small">Edit</el-button>
-			</template>
 
 			<template #opHeader>
 				<el-input placeholder="search" />
 			</template>
-
+			<template #op>
+				<el-button type="text" size="small">Detail</el-button>
+				<el-button type="text" size="small">Edit</el-button>
+			</template>
 		</Table>
-
-
 	</div>
 </template>
 
