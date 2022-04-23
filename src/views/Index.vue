@@ -2,7 +2,7 @@
     <div>
         <el-container ref="app">
             <div v-show="!navStore.isHidden">
-                <brand></brand>
+                <!-- <brand></brand> -->
                 <nav-bar />
             </div>
 
@@ -12,7 +12,6 @@
                 </el-header>
 
                 <tab-bar @reload="reload" v-show="!tabStore.isHidden" />
-
                 <el-main>
                     <el-config-provider :locale="zhCN">
                         <router-view v-slot="{ Component }">
@@ -24,7 +23,6 @@
                         </router-view>
                     </el-config-provider>
                 </el-main>
-
             </el-container>
         </el-container>
     </div>
@@ -74,7 +72,8 @@ const reload = async () => {
 
 <style lang="scss" scoped>
 .el-main {
-    overflow: hidden !important;
+    height: calc(100vh - 100px);
+    overflow-x: hidden;
 }
 
 .el-header {
