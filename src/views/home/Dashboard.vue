@@ -26,10 +26,10 @@
 			<template #opHeader>
 				<el-input placeholder="search" />
 			</template>
-			<template #op>
+			<!-- <template #op>
 				<el-button type="text" size="small">Detail</el-button>
 				<el-button type="text" size="small">Edit</el-button>
-			</template>
+			</template> -->
 		</Table>
 	</div>
 </template>

@@ -1,15 +1,18 @@
 <template>
 	<div class="main-tabs">
 		<el-tabs v-model="state.activeTab" type="card" @tab-change="tabChange" @tab-remove="tabRemove">
-			<el-tab-pane v-for="item in state.tabItems" :key="item.name" :label="item.title" :name="item.name"
-				:closable="item.closable">
-				<template #label>
-					<el-icon class="activeTabIcon">
-						<football />
-					</el-icon>
-					{{ item.title }}
-				</template>
-			</el-tab-pane>
+			<!--  @contextmenu="tabContextmenu($event)" -->
+			<template v-for="item in state.tabItems" :key="item.name">
+				<el-tab-pane :label="item.title" :name="item.name" :closable="item.closable">
+					<template #label>
+						<el-icon class="activeTabIcon">
+							<football />
+						</el-icon>
+						{{ item.title }}
+					</template>
+				</el-tab-pane>
+			</template>
+
 		</el-tabs>
 
 		<div class="op">
@@ -42,14 +45,14 @@
 </template>
 <script lang="ts" setup>
 import { AppRoute } from '@/router/type';
-import { useHeaderStore, useTabStore } from '@/stores/frameworkStore';
+import { useHeaderStore } from '@/stores/frameworkStore';
 import ITabItem from '@type/components/layout/ITabItem'
 import { TabPanelName } from 'element-plus'
-import { onMounted, reactive, ref, watch, computed } from 'vue'
+import { onMounted, reactive, ref, watch, computed, nextTick } from 'vue'
 import { useRouter, useRoute } from 'vue-router';
+import Sortable from 'sortablejs';
 
 const headerStore = useHeaderStore()
-const tabStore = useTabStore()
 
 const router = useRouter()
 const route = useRoute()
@@ -195,9 +198,20 @@ const addOrLocateTab = (appRoute: AppRoute) => {
 			closable: true,
 		}
 		state.tabItems.push(existsItem)
+		nextTick(() => {
+			const element = document.getElementById(`tab-${existsItem!.name}`)
+			if (element) {
+				element.oncontextmenu = (event) => {
+					event.preventDefault()
+				}
+			}
+		})
 	}
 	state.activeTab = existsItem.name
 	headerStore.$state.setBreads(existsItem.path)
+
+
+
 }
 
 
@@ -211,6 +225,13 @@ const closeOther = computed(() => {
 
 const closeAll = computed(() => state.tabItems.length > 1)
 
+
+const tabContextmenu = (event: MouseEvent) => {
+	event.preventDefault()
+	console.log(event);
+}
+
+
 /**
  * 监视路由变化(导航栏切换),添加或者定位到当前tab
  */
@@ -222,12 +243,28 @@ watch(
 	}
 )
 
+
 onMounted(() => {
 	if (router.currentRoute.value.name == '404') {
 		to404()
 		headerStore.$state.setBreads('/index/404')
 	} else {
 		addOrLocateTab(router.currentRoute.value as any as AppRoute)
+	}
+
+
+	const el: HTMLElement = document.querySelector(".el-tabs__nav")!;
+	if (el) {
+		nextTick(() => {
+			Sortable.create(el, {
+				animation: 150,
+				onEnd({ newIndex, oldIndex }) {
+					//oldIIndex拖放前的位置， newIndex拖放后的位置  
+					const currRow = state.tabItems.splice(oldIndex!, 1)[0];
+					state.tabItems.splice(newIndex!, 0, currRow);
+				},
+			});
+		})
 	}
 })
 

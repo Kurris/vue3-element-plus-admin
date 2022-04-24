@@ -14,11 +14,13 @@
     "normalize.css": "^8.0.1",
     "nprogress": "^0.2.0",
     "pinia": "^2.0.13",
+    "sortablejs": "^1.15.0",
     "vue": "^3.2.25",
     "vue-router": "^4.0.14"
   },
   "devDependencies": {
     "@types/nprogress": "^0.2.0",
+    "@types/sortablejs": "^1.10.7",
     "@vitejs/plugin-vue": "^2.3.0",
     "node-sass": "^7.0.1",
     "sass": "^1.50.0",
