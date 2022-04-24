@@ -1,9 +1,13 @@
 <template>
 	<div class="main-topRight">
-		<search />
-		<message />
-		<fullscreen />
-		<lock />
+
+		<div v-show="!navStore.isHidden" class="main-topRight">
+			<search />
+			<message />
+			<fullscreen />
+			<lock />
+		</div>
+
 		<avatar />
 	</div>
 </template>
@@ -15,6 +19,9 @@ import Fullscreen from './TopRightPlugin/Fullscreen.vue'
 import Search from './TopRightPlugin/Search.vue';
 import Avatar from './TopRightPlugin/Avatar.vue';
 import Lock from './TopRightPlugin/Lock.vue';
+import { useNavStore } from '@/stores/frameworkStore';
+
+const navStore = useNavStore()
 
 
 </script>

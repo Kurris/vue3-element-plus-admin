@@ -23,7 +23,7 @@ const router = createRouter({
 router.beforeEach(guard => {
 	nprogress.start()
 
-	document.title = ('App : ' + guard.meta.title) as string
+	document.title = ('App | ' + guard.meta.title) as string
 })
 
 router.afterEach(() => {
