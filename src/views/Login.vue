@@ -52,7 +52,7 @@ const currentYear = ref(new Date().getFullYear())
     width: 380px;
     height: 415px;
     border-radius: 10px;
-    box-shadow: 0 10px 40px rgb(0 21 41 / 8%);
+    box-shadow: 0 8px 15px 8px rgb(0 21 41 / 8%);
 
     top: 50%;
     left: 50%;
