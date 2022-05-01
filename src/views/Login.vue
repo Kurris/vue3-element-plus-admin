@@ -78,12 +78,16 @@ const currentYear = ref(new Date().getFullYear())
     }
 
     .el-link {
-        color: var(--el-link-hover-text-color);
+        // color: var(--el-link-hover-text-color);
         content: "";
-        border-bottom: 1px solid var(--el-link-hover-text-color);
+        border-bottom: 1px solid rgb(155, 152, 152);
 
         &:after {
             border-bottom: unset
+        }
+
+        &:hover {
+            border-bottom: 1px solid var(--el-link-hover-text-color);
         }
     }
 
