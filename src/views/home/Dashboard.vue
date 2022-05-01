@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<Table row-key="date" request-url="weatherforecast/weatherforecast" :columns="[{
+		<!-- <Table row-key="date" request-url="weatherforecast/weatherforecast" :columns="[{
 			prop: 'date',
 			lable: '日期',
 		}, {
@@ -25,12 +25,12 @@
 
 			<template #opHeader>
 				<el-input placeholder="search" />
-			</template>
-			<!-- <template #op>
+			</template> -->
+		<!-- <template #op>
 				<el-button type="text" size="small">Detail</el-button>
 				<el-button type="text" size="small">Edit</el-button>
 			</template> -->
-		</Table>
+		<!-- </Table> -->
 	</div>
 </template>
 

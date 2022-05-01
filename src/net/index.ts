@@ -1,7 +1,9 @@
 import axios, { AxiosPromise, AxiosRequestConfig } from 'axios'
 import { ElNotification } from 'element-plus'
 import NProgress from 'nprogress'
+import { useRouter } from 'vue-router'
 import BaseResponse from './type/BaseResponse'
+const router = useRouter()
 
 export interface MyRequestConfig extends AxiosRequestConfig {
 	/**
@@ -44,7 +46,17 @@ export const requestFunction = <TUserResponse>(config: MyRequestConfig): AxiosPr
 				window.URL.createObjectURL(blob)
 				document.body.removeChild(a)
 			} else {
+				console.log(result)
+
 				//业务状态处理
+				if (result.data.status == 401) {
+					if (router.currentRoute.value.name != 'login') {
+						router.push({
+							path: 'login',
+						})
+					}
+				}
+
 				return result
 			}
 		},

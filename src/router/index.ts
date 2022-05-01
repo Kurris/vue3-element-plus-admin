@@ -6,7 +6,15 @@ import nprogress from 'nprogress'
 const routes = [
 	{
 		path: '',
-		redirect: '/index/dashboard',
+		redirect: '/index',
+	},
+	{
+		path: '/login',
+		component: () => import('@views/Login.vue'),
+		name: 'login',
+		meta: {
+			title: '登录',
+		},
 	},
 	{
 		path: '/:pathMatch(.*)',

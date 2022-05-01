@@ -2,7 +2,7 @@
     <div class="plugin">
         <el-badge :is-dot="isDot" :value="120" :max="99" @mouseover="msgMouseEnter" @mouseleave="msgMouseLeave">
             <el-icon>
-                <message />
+                <bell />
             </el-icon>
         </el-badge>
     </div>

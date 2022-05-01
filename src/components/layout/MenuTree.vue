@@ -1,11 +1,11 @@
 <template>
-    <el-menu-item v-if="(!item.children || !item.children.length) && item.visiable" :index="item.route">
+    <el-menu-item v-if="(!item.children || !item.children.length) && item.visible" :index="item.route">
         <el-icon v-if="item.icon">
             <component :is="item.icon" />
         </el-icon>
         <span>{{ item.displayName }}</span>
     </el-menu-item>
-    <el-sub-menu v-else-if="item.visiable" :index="item.route" @click.stop="subMenuClick">
+    <el-sub-menu v-else-if="item.visible" :index="item.route" @click.stop="subMenuClick">
         <template #title>
             <el-icon v-if="item.icon">
                 <component :is="item.icon" />

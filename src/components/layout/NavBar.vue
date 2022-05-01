@@ -45,6 +45,8 @@ onBeforeMount(async () => {
 			url: 'menus',
 			method: 'get',
 		})
+		console.log(res);
+
 		navStore.$state.items = res
 	} catch {
 		navStore.$state.items = Array<IMenuItem>(...[
@@ -52,27 +54,27 @@ onBeforeMount(async () => {
 				displayName: '首页',
 				route: '首页',
 				icon: 'home-filled',
-				visiable: true,
+				visible: true,
 				children: [
 					{
 						displayName: 'Dashboard',
 						route: '/index/dashboard',
 						icon: '',
-						visiable: true,
+						visible: true,
 						children: [],
 					},
 					{
 						displayName: '个人中心',
 						route: '/index/myzoom',
 						icon: '',
-						visiable: true,
+						visible: true,
 						children: [],
 					},
 					{
 						displayName: '404',
 						route: '/index/404',
 						icon: '',
-						visiable: false,
+						visible: false,
 						children: [],
 					}
 				],
