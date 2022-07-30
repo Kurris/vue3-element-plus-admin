@@ -12,9 +12,11 @@ export const useNavStore = defineStore('navStore', {
 			items: Array<IMenuItem>(),
 			/**菜单点击水波纹效果*/
 			useRipple: false,
+			showBrand: true
 		}
 	},
 	actions: {
+		/** 水波纹 */
 		Ripple(event: MouseEvent) {
 			if (!this.useRipple) return
 
@@ -35,7 +37,8 @@ export const useNavStore = defineStore('navStore', {
 export const useHeaderStore = defineStore('headerStore', {
 	state: () => {
 		return {
-			setBreads: (path: string) => {},
+			/** 设置面包屑 */
+			setBreads: (path: string) => { },
 		}
 	},
 })
@@ -44,7 +47,7 @@ export const useHeaderStore = defineStore('headerStore', {
 export const useTabStore = defineStore('tabStore', {
 	state: () => {
 		return {
-			/**是否显示tab*/
+			/** 是否显示tab */
 			isHidden: false,
 		}
 	},

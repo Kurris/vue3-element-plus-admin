@@ -2,7 +2,7 @@
     <div>
         <el-container ref="app">
             <div v-show="!navStore.isHidden">
-                <brand></brand>
+                <brand v-if="navStore.showBrand" />
                 <nav-bar />
             </div>
 
