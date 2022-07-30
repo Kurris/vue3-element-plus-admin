@@ -1,14 +1,15 @@
 <template>
 	<div class="main-topRight">
-
-		<div v-show="!navStore.isHidden" class="main-topRight">
+		<div v-if="!navStore.isHidden" class="main-topRight">
 			<search />
 			<message />
 			<fullscreen />
 			<lock />
+			<avatar />
 		</div>
-
-		<avatar />
+		<div v-else>
+			<avatar />
+		</div>
 	</div>
 </template>
 

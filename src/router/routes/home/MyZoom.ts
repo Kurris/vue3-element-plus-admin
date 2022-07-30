@@ -1,6 +1,6 @@
-import { AppRoute } from '../../type'
+import { IAppRoute } from '../../type'
 
-const myzoom: AppRoute = {
+const myzoom: IAppRoute = {
 	path: 'myzoom',
 	component: () => import('@views/home/MyZoom.vue'),
 	name: 'myzoom',

@@ -9,8 +9,6 @@
 </template>
 <script lang="ts" setup>
 import { useNavStore } from '@/stores/frameworkStore';
-
-
 const navStore = useNavStore()
 
 </script>

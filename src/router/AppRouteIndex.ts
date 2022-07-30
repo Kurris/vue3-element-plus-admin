@@ -1,14 +1,17 @@
-import { AppRoute } from './type'
-import scanRoutes from './routes'
+import { IAppRoute } from './type'
+import scanRoutes from './scanRoutes'
 
-const appRouteIndex: AppRoute = {
+import { notfound } from './common/notfound'
+import { forbiden } from './common/forbiden'
+
+const appRouteIndex: IAppRoute = {
 	path: '/index',
 	component: () => import('@views/Index.vue'),
 	name: 'index',
 	meta: {
 		title: '首页',
 	},
-	children: [...scanRoutes],
+	children: [...scanRoutes, forbiden, notfound],
 }
 
 appRouteIndex.children!.push({

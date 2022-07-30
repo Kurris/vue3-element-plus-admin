@@ -1,26 +1,46 @@
 <template>
     <el-empty v-if="total == 0" description="暂无数据" />
     <div v-else>
-        <el-table :row-key="rowKey" :data="data" :stripe="stripe || true" :border="border || true" highlight-current-row
-            v-loading="isLoading"
-            :header-cell-style="headerCellStyle || { backgroundColor: '#eef1f6', color: '#606266', fontWeight: 'bold' }"
-            @current-change="rowChange" @cell-contextmenu="cellContextmenu" @cell-dblclick="cellDbClick">
+        <el-table :row-key="rowKey" :data="data" :stripe="stripe" :border="border" highlight-current-row
+            v-loading="isLoading" :header-cell-style="headerCellStyle || {
+                'background-color': '#eef1f6', color: '#606266', fontWeight: 'bold'
+            }" @current-change="rowChange" @cell-contextmenu="cellContextmenu" @cell-dblclick="cellDbClick">
 
+
+            <!-- <el-table-column type="index" label="行" /> -->
             <!-- 可显示的 -->
             <template v-for="item in columns.filter(x => x.visiable == undefined || x.visiable || x.visiable == null)">
-                <template v-if="!item.slotName && !item.editable">
-                    <el-table-column :fixed="item.fixed" :prop="item.prop" :label="item.lable"
-                        :align="item.align || 'center'" />
+                <!-- 非自定义 -->
+                <template v-if="item.slotName">
+                    <el-table-column :fixed="item.fixed" :label="item.lable" :align="item.align || 'center'"
+                        :width="item.width">
+                        <!-- 没有label才需要渲染header -->
+                        <template #header v-if="!item.lable">
+                            <slot :name="item.slotName + 'Header'"></slot>
+                        </template>
+                        <template #default="scope">
+                            <slot :name="item.slotName" :scope="scope"></slot>
+                        </template>
+                    </el-table-column>
                 </template>
-                <template v-else-if="!item.slotName && item.editable">
-                    <el-table-column :fixed="item.fixed" :prop="item.prop" :label="item.lable"
-                        :align="item.align || 'center'">
+                <template v-else-if="item.editable">
+                    <el-table-column :fixed="item.fixed" :label="item.lable" :align="item.align || 'center'"
+                        :width="item.width" :prop="item.prop">
+                        <template #header>
+                            <div
+                                :style="{ display: 'flex', alignItems: 'center', justifyContent: item.align || 'center' }">
+                                <el-icon style="margin-right: 5px;">
+                                    <EditPen />
+                                </el-icon>
+                                {{ item.lable }}
+                            </div>
+                        </template>
                         <template #default="scope">
                             <div v-if="editableMap.get(scope.row[rowKey] + '_' + item.prop!)" style="display: flex;">
                                 <el-input v-model="scope.row[item.prop!]" />
                                 <ConfirmOrCancel style="margin-top: 5px;" :confirm-option="{ tipText: '提交', }"
                                     :cancel-option="{
-                                        showMsg: cellIsModified(scope.row[item.prop!], editableBeforeValueMap.get(scope.row[rowKey] + '_' + item.prop!)),
+                                        showMsg: cellIsModified(scope.row[item.prop!], editableBeforeValueMap.get(scope.row[rowKey] + '_' + item.prop!) || ''),
                                         tipText: '取消', messageBox: {
                                             isHtml: true,
                                             title: '提醒',
@@ -39,25 +59,17 @@
                     </el-table-column>
                 </template>
                 <template v-else>
-                    <el-table-column :fixed="item.fixed" :label="item.lable" :align="item.align || 'center'">
-                        <!-- 没有lable才需要渲染header -->
-                        <template #header v-if="!item.lable">
-                            <slot :name="item.slotName + 'Header'"></slot>
-                        </template>
-                        <template #default="scope">
-                            <slot :name="item.slotName" :scope="scope"></slot>
-                        </template>
-                    </el-table-column>
+                    <el-table-column :fixed="item.fixed" :prop="item.prop" :label="item.lable"
+                        :align="item.align || 'center'" :width="item.width" />
                 </template>
             </template>
-
         </el-table>
         <Pagination :load="load" :total="total" />
     </div>
 
 </template>
 <script lang="ts" setup>
-import { ref, onBeforeMount, nextTick } from 'vue';
+import { ref, onBeforeMount, nextTick, CSSProperties } from 'vue';
 import { IColumn, IPaginationResponse } from './Type'
 import Pagination from './Pagination.vue'
 import http from '../../net/http';
@@ -65,52 +77,50 @@ import ConfirmOrCancel from './ConfirmOrCancel.vue'
 import Sortable from 'sortablejs';
 
 
-const props = defineProps<{
-
-
-    /**
-     * 表格行的唯一标识
-     */
+const props = withDefaults(defineProps<{
+    /** 表格行的唯一标识 */
     rowKey: string
 
-
-    /**
-     * 表格列
-     */
+    /** 表格列 */
     columns: IColumn[]
 
-    /**
-     * 请求地址
-    */
+    /** 请求地址 */
     requestUrl: string,
 
-    /**
-     * 请求参数
-    */
+    /**请求参数*/
     requestBody?: object,
 
     /**
      * 标题样式 
-     * @type {CSSProperty}
+     * @type {CSSProperties}
     */
-    headerCellStyle?: object,
+    headerCellStyle?: CSSProperties,
 
-    /**
-     * 斑马线
-    */
+    /** 斑马线*/
     stripe?: boolean,
 
-    /**
-     * 边框
-    */
+    /** 边框 */
     border?: boolean
-}>()
+
+    /** 是否为可拖拽行 */
+    rowDrag?: boolean
+}>(), {
+    // headerCellStyle:,
+    stripe: true,
+    border: true,
+    rowDrag: false
+})
+
+
 
 const data = ref(Array<any>())//表格数据
 const total = ref(0)//表格数据总数
 const isLoading = ref(false)//loading显示
-const editableMap = ref(new Map<string, boolean>())//编辑中的单元格
-const editableBeforeValueMap = ref(new Map<string, object>())//编辑中的单元格原始值
+
+/**编辑中的单元格*/
+const editableMap = ref(new Map<string, boolean>())
+/**编辑中的单元格原始值*/
+const editableBeforeValueMap = ref(new Map<string, string>())
 
 const emits = defineEmits<{
     (e: 'rowChange', row: any, oldRow: any): void
@@ -150,14 +160,16 @@ const cellContextmenu = (row: any, column: any, cell: any, event: PointerEvent) 
  * @param event 点击事件
  * 
 */
-const cellDbClick = (row: any, column: any, _: any, event: PointerEvent) => {
+const cellDbClick = (row: any, column: any, _: any) => {
     const key = row[props.rowKey]
     let col = props.columns[column.no]
 
     if (!col) return
-    if (!col.editable) return
+    if (col.editable != undefined && col.editable == false) return
 
     let mapKey = key + '_' + col.prop!
+    console.log(mapKey);
+
 
     if (!editableMap.value.has(mapKey)) {
         editableMap.value.set(mapKey, true)
@@ -167,7 +179,6 @@ const cellDbClick = (row: any, column: any, _: any, event: PointerEvent) => {
             editableMap.value.set(mapKey, true)
         }
     }
-
     editableBeforeValueMap.value.set(mapKey, row[column.property])
 }
 
@@ -233,18 +244,20 @@ const load = async (pageIndex: number, pageSize: number) => {
 
     try {
         let pageResponse = await http<IPaginationResponse>({
-            useNotify: false,
             url: props.requestUrl,
-            method: 'post',
-            data: {
+            method: 'get',
+            params: {
                 pageIndex: pageIndex,
                 pageSize: pageSize,
                 condition: props.requestBody
             }
         })
 
-        data.value = pageResponse.data || Array<any>()
-        total.value = pageResponse.total || 0
+        console.log(pageResponse);
+
+
+        data.value = pageResponse.data.data || Array<any>()
+        total.value = pageResponse.data.total || 0
     } catch (err) {
         console.log(err + '\r\n' + 'request url:' + props.requestUrl);
     } finally {
@@ -255,22 +268,24 @@ const load = async (pageIndex: number, pageSize: number) => {
 
 
 onBeforeMount(async () => {
-    await load(1, 10)
+    await load(1, 20)
 
-    nextTick(() => {
-        const el: HTMLElement = document.querySelector('.el-table__body-wrapper tbody')!
-        if (el) {
-            Sortable.create(el, {
-                disabled: false,
-                // animation: 150,
-                ghostClass: 'tbbgc',
-                onEnd({ newIndex, oldIndex }) {
-                    const currRow = data.value.splice(oldIndex!, 1)[0];
-                    data.value.splice(newIndex!, 0, currRow);
-                },
-            });
-        }
-    })
+    if (props.rowDrag) {
+        nextTick(() => {
+            const el: HTMLElement = document.querySelector('.el-table__body-wrapper tbody')!
+            if (el) {
+                Sortable.create(el, {
+                    disabled: false,
+                    // animation: 150,
+                    ghostClass: 'tbbgc',
+                    onEnd({ newIndex, oldIndex }) {
+                        const currRow = data.value.splice(oldIndex!, 1)[0];
+                        data.value.splice(newIndex!, 0, currRow);
+                    },
+                });
+            }
+        })
+    }
 })
 
 

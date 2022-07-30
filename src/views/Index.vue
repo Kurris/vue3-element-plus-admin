@@ -2,7 +2,7 @@
     <div>
         <el-container ref="app">
             <div v-show="!navStore.isHidden">
-                <!-- <brand></brand> -->
+                <brand></brand>
                 <nav-bar />
             </div>
 
@@ -12,6 +12,7 @@
                 </el-header>
 
                 <tab-bar @reload="reload" v-show="!tabStore.isHidden" />
+
                 <el-main>
                     <el-config-provider :locale="zhCN">
                         <router-view v-slot="{ Component }">
@@ -36,18 +37,22 @@ import NavBar from '@c/layout/NavBar.vue'
 import HeaderBar from '@c/layout/HeaderBar.vue'
 import TabBar from '@c/layout/TabBar.vue'
 import Brand from '../components/layout/Brand.vue'
+import nprogress from 'nprogress'
 
 import { useNavStore, useTabStore } from '@/stores/frameworkStore'
-
-let state = reactive({
-    compontIsShow: true,//刷新
-})
 
 const navStore = useNavStore()
 const tabStore = useTabStore()
 
+let state = reactive({
+    compontIsShow: true,//用于处理刷新
+})
+
+
+
 const app = ref()
 
+//VueUse:监控浏览器大小变化
 useResizeObserver(app, entries => {
     const entry = entries[0]
     const { width } = entry.contentRect
@@ -59,11 +64,16 @@ useResizeObserver(app, entries => {
     tabStore.isHidden = width <= 500
 })
 
+
+/**刷新当前路由*/
 const reload = async () => {
+    //显示进度条
+    nprogress.start()
     state.compontIsShow = false
 
     //等待渲染再设置为true
     await nextTick(() => {
+        nprogress.done()
         state.compontIsShow = true
     })
 }

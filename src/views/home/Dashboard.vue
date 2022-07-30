@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<!-- <Table row-key="date" request-url="weatherforecast/weatherforecast" :columns="[{
+		<Table row-key="date" request-url="weatherforecast" :columns="[{
 			prop: 'date',
 			lable: '日期',
 		}, {
@@ -13,10 +13,10 @@
 			editable: true
 		}, {
 			prop: 'temperatureF',
-			lable: '华氏度'
+			lable: '华氏度',
 		}, {
 			slotName: 'op',
-		}]">
+		}]" :rowDrag="false">
 
 			<template #summary="{ scope }">
 				<el-tag>{{ scope.row.summary }}</el-tag>
@@ -25,17 +25,18 @@
 
 			<template #opHeader>
 				<el-input placeholder="search" />
-			</template> -->
-		<!-- <template #op>
+			</template>
+			<template #op>
 				<el-button type="text" size="small">Detail</el-button>
 				<el-button type="text" size="small">Edit</el-button>
-			</template> -->
-		<!-- </Table> -->
+			</template>
+		</Table>
 	</div>
 </template>
 
 <script setup lang="ts">
 import Table from '@/components/ui/Table.vue';
+
 
 </script>
 <style>

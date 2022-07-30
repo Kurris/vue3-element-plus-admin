@@ -48,7 +48,7 @@ const inputBlur = () => {
         transition: width 0.3s ease;
     }
 
-    & :deep(.el-input__inner) {
+    & :deep(.el-input__wrapper) {
         box-shadow: unset;
         border-radius: 0px;
 

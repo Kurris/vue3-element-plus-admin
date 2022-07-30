@@ -1,7 +1,6 @@
 <template>
 	<div class="main-menu">
 		<el-scrollbar>
-			<!-- background-color="#304156" -->
 			<el-menu :collapse="navStore.$state.isCollapse" router :active-text-color="navActiveTextColor"
 				:background-color="backgroundColor" :default-active="$route.path" text-color="black"
 				class="el-menu-vertical">
@@ -13,6 +12,32 @@
 
 		</el-scrollbar>
 	</div>
+	<div class="setting">
+		<el-dropdown trigger="click">
+			<el-icon style="cursor: pointer;">
+				<Setting />
+			</el-icon>
+			<template #dropdown>
+				<el-dropdown-menu>
+					<el-dropdown-item>Action 1</el-dropdown-item>
+					<el-dropdown-item>Action 2</el-dropdown-item>
+					<el-dropdown-item>Action 3</el-dropdown-item>
+					<el-dropdown-item>Action 4</el-dropdown-item>
+					<el-dropdown-item>Action 5</el-dropdown-item>
+				</el-dropdown-menu>
+			</template>
+		</el-dropdown>
+		<el-button v-if="!navStore.isCollapse"
+			style="border-radius: 30px;margin-left: 50px;transition: all 0.3s ease-in-out;" text="plain">
+			<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-tag"
+				viewBox="0 0 16 16">
+				<path d="M6 4.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm-1 0a.5.5 0 1 0-1 0 .5.5 0 0 0 1 0z" />
+				<path
+					d="M2 1h4.586a1 1 0 0 1 .707.293l7 7a1 1 0 0 1 0 1.414l-4.586 4.586a1 1 0 0 1-1.414 0l-7-7A1 1 0 0 1 1 6.586V2a1 1 0 0 1 1-1zm0 5.586 7 7L13.586 9l-7-7H2v4.586z" />
+			</svg>
+			<span>v0.0.1</span>
+		</el-button>
+	</div>
 </template>
 
 <script lang="ts" setup>
@@ -23,7 +48,7 @@ import http from '@/net/http';
 import { useNavStore } from '@/stores/frameworkStore';
 const navStore = useNavStore()
 
-
+const px50 = ref('0px')
 
 // 获取根元素
 var r = document.querySelector(':root')!;
@@ -40,64 +65,76 @@ const navActiveTextColor = ref(activeTextColor)
 onBeforeMount(async () => {
 
 	try {
-		var res = await http<Array<IMenuItem>>({
-			useNotify: false,
-			url: 'menus',
-			method: 'get',
-		})
-		console.log(res);
+		// var res = await http<Array<IMenuItem>>({
+		// 	useNotify: false,
+		// 	url: 'menus',
+		// 	method: 'get',
+		// })
+		// console.log(res);
 
-		navStore.$state.items = res
+		// navStore.items = res.data
 	} catch {
-		navStore.$state.items = Array<IMenuItem>(...[
-			{
-				displayName: '首页',
-				route: '首页',
-				icon: 'home-filled',
-				visible: true,
-				children: [
-					{
-						displayName: 'Dashboard',
-						route: '/index/dashboard',
-						icon: '',
-						visible: true,
-						children: [],
-					},
-					{
-						displayName: '个人中心',
-						route: '/index/myzoom',
-						icon: '',
-						visible: true,
-						children: [],
-					},
-					{
-						displayName: '404',
-						route: '/index/404',
-						icon: '',
-						visible: false,
-						children: [],
-					}
-				],
-			}
-		])
+
 	}
 
-
+	navStore.items = Array<IMenuItem>(...[
+		{
+			displayName: '首页',
+			route: '首页',
+			icon: 'home-filled',
+			visible: true,
+			children: [
+				{
+					displayName: 'Dashboard',
+					route: '/index/dashboard',
+					icon: '',
+					visible: true,
+					children: [],
+				},
+				{
+					displayName: '个人中心',
+					route: '/index/myzoom',
+					icon: '',
+					visible: true,
+					children: [],
+				},
+				{
+					displayName: '404',
+					route: '/index/404',
+					icon: '',
+					visible: false,
+					children: [],
+				}
+			],
+		}
+	])
 })
 
 </script>
 <style scoped lang="scss">
+$settingHeight : 8vh;
+
 .el-menu-vertical:not(.el-menu--collapse) {
 	width: 285px;
 	min-height: 400px;
 }
 
+// var(--header-height)
 .el-menu {
-	height: 100vh;
+	height: calc(100vh - $settingHeight - v-bind(px50));
 	border: none !important;
 }
 
 .main-menu {
 	box-shadow: 0px 1px 4px 0px #c1c1c1
+}
+
+.setting {
+	display: flex;
+	align-items: center;
+	border: 1px solid rgb(242, 242, 242);
+	padding-left: 20px;
+	height: 8vh;
+	box-shadow: 0px 2px 4px 0px #c1c1c1
 }
 </style>

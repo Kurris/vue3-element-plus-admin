@@ -20,8 +20,10 @@
     </el-sub-menu>
 </template>
  <script lang="ts">
-import Ripple from '@/directive/Ripple'
+
 import { IMenuItem } from '@type/components/layout/IMenuItem'
+import { useNavStore } from '@/stores/frameworkStore';
+const navStore = useNavStore()
 
 export default {
     name: 'menuTree',
@@ -34,17 +36,7 @@ defineProps<{
 }>()
 
 const subMenuClick = (e: MouseEvent) => {
-    let el = e.target as Element
-
-    // 找到item和header节点
-    while (!((el.hasAttribute("role") && el.getAttribute("role") === "menuitem") && el.classList.contains("el-menu-item")
-        || el.classList.contains("el-sub-menu__title"))) {
-
-        el = el.parentElement!
-    }
-    if (el != undefined) {
-        Ripple(el, e)
-    }
+    navStore.Ripple(e)
 }
 
 </script>

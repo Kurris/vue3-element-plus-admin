@@ -1,8 +1,8 @@
-import { AppRoute } from './type'
+import { IAppRoute } from './type'
 
 const modules = import.meta.globEager('./routes/**/*.ts')
 
-const routes: AppRoute[] = []
+const routes: IAppRoute[] = []
 
 Object.keys(modules).forEach(key => {
 	const mod = modules[key].default || {}

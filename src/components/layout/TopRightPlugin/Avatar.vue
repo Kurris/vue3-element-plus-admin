@@ -2,8 +2,6 @@
     <div class="plugin">
         <el-dropdown trigger="click" popper-class="topRight" @command="avatarCommand">
             <span class="el-dropdown-link">
-                <!-- https://pica.zhimg.com/v2-ebbc55687b5760ab321d4f0190e014dc_xl.jpg?source=32738c0c -->
-                <!-- https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif?imageView2/1/w/80/h/80 -->
                 <el-avatar shape="square" :size="40"
                     src="https://pica.zhimg.com/v2-ebbc55687b5760ab321d4f0190e014dc_xl.jpg?source=32738c0c" />
 
@@ -27,6 +25,7 @@
 </template>
 <script lang="ts" setup>
 import { useRouter } from 'vue-router';
+import { userSignInManager } from '@/lib/oidclib';
 
 
 const router = useRouter()
@@ -40,12 +39,14 @@ const avatarCommand = (cmd: string) => {
         router.push({
             path: '/index/dashboard'
         })
+    } else if (cmd === 'logout') {
+        userSignInManager.signoutRedirect()
     }
 }
 
 </script>
 <style lang="scss" scoped>
 .el-avatar {
-    border-radius: 10px;
+    border-radius: 8px;
 }
 </style>

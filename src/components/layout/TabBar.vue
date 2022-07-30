@@ -1,7 +1,6 @@
 <template>
 	<div class="main-tabs">
 		<el-tabs v-model="state.activeTab" type="card" @tab-change="tabChange" @tab-remove="tabRemove">
-			<!--  @contextmenu="tabContextmenu($event)" -->
 			<template v-for="item in state.tabItems" :key="item.name">
 				<el-tab-pane :label="item.title" :name="item.name" :closable="item.closable">
 					<template #label>
@@ -12,7 +11,6 @@
 					</template>
 				</el-tab-pane>
 			</template>
-
 		</el-tabs>
 
 		<div class="op">
@@ -44,13 +42,13 @@
 	</div>
 </template>
 <script lang="ts" setup>
-import { AppRoute } from '@/router/type';
 import { useHeaderStore } from '@/stores/frameworkStore';
 import ITabItem from '@type/components/layout/ITabItem'
 import { TabPanelName } from 'element-plus'
 import { onMounted, reactive, ref, watch, computed, nextTick } from 'vue'
 import { useRouter, useRoute } from 'vue-router';
 import Sortable from 'sortablejs';
+import { IAppRoute } from '@/router/type';
 
 const headerStore = useHeaderStore()
 
@@ -75,16 +73,14 @@ const state = reactive({
 	]),
 })
 
-/**
- * 跳转到404
-*/
+/** 跳转到404 */
 const to404 = () => {
-	let existsItem = state.tabItems.find(x => x.name == '404')
+	let existsItem = state.tabItems.find(x => x.name == 'notfound')
 	if (!existsItem) {
 		existsItem = {
 			title: '404',
-			name: '404',
-			path: '/index/404',
+			name: 'notfound',
+			path: '/index/notfound',
 			closable: true,
 		}
 		state.tabItems.push(existsItem)
@@ -93,18 +89,13 @@ const to404 = () => {
 }
 
 
-
-/**
- * 主动展开下拉
-*/
+/** 主动展开下拉 */
 const showDropdown = () => {
 	dropdownOp.value.handleOpen()
 }
 
 
-/**
- * 切换tab
-*/
+/** 切换tab */
 const tabChange = (activeTab: TabPanelName) => {
 	state.activeTab = activeTab.toString()
 
@@ -117,9 +108,7 @@ const tabChange = (activeTab: TabPanelName) => {
 	}
 }
 
-/**
- * 移除当前tab
- */
+/** 移除当前tab */
 const tabRemove = (tab: TabPanelName) => {
 	let i = state.tabItems.findIndex(x => x.name == tab.toString())
 	if (i >= 0) {
@@ -131,9 +120,7 @@ const tabRemove = (tab: TabPanelName) => {
 	}
 }
 
-/**
- * 下拉命令执行
-*/
+/** 下拉命令执行 */
 const handleCommand = (command: string) => {
 	if (command == 'tabRemoveAll') {
 		tabRemoveAll()
@@ -144,9 +131,7 @@ const handleCommand = (command: string) => {
 	}
 }
 
-/**
- * 移除其他tab
- */
+/** 移除其他tab */
 const tabRemoveOther = () => {
 	let i = state.tabItems.findIndex(x => x.name == state.activeTab)
 	//不是最后一个
@@ -159,17 +144,13 @@ const tabRemoveOther = () => {
 	}
 }
 
-/**
- * 移除所有tab
- */
+/** 移除所有tab */
 const tabRemoveAll = () => {
 	state.tabItems.splice(1, state.tabItems.length - 1)
 	state.activeTab = state.tabItems[0].name
 }
 
-/**
- * 移除当前tab
- */
+/** 移除当前tab */
 const tabRemoveCurrent = () => {
 	let i = state.tabItems.findIndex(x => x.name == state.activeTab)
 	if (i > 0) {
@@ -185,10 +166,8 @@ const tabRemoveCurrent = () => {
 	}
 }
 
-/**
- * 添加tab
- */
-const addOrLocateTab = (appRoute: AppRoute) => {
+/** 添加tab */
+const addOrLocateTab = (appRoute: IAppRoute) => {
 	let existsItem = state.tabItems.find(x => x.name == appRoute.name)
 	if (!existsItem) {
 		existsItem = {
@@ -199,6 +178,7 @@ const addOrLocateTab = (appRoute: AppRoute) => {
 		}
 		state.tabItems.push(existsItem)
 		nextTick(() => {
+			//f12查看id规则
 			const element = document.getElementById(`tab-${existsItem!.name}`)
 			if (element) {
 				element.oncontextmenu = (event) => {
@@ -209,20 +189,24 @@ const addOrLocateTab = (appRoute: AppRoute) => {
 	}
 	state.activeTab = existsItem.name
 	headerStore.$state.setBreads(existsItem.path)
-
-
-
 }
 
-
+/** 是否可以关闭其他 */
 const closeOther = computed(() => {
-	if (state.tabItems.length == 1) return false
+	if (state.tabItems.length == 1) {
+		return false
+	}
 
-	if (state.tabItems.length == 2 && state.activeTab == route.name && state.activeTab != "dashboard") return false
+	if (state.tabItems.length == 2
+		&& state.activeTab == route.name
+		&& state.activeTab != "dashboard") {
+		return false
+	}
 
 	return true;
 })
 
+/** 是否可以关闭全部 */
 const closeAll = computed(() => state.tabItems.length > 1)
 
 
@@ -232,40 +216,38 @@ const tabContextmenu = (event: MouseEvent) => {
 }
 
 
-/**
- * 监视路由变化(导航栏切换),添加或者定位到当前tab
- */
+/** 监视路由变化(导航栏切换),添加或者定位到当前tab */
 watch(
 	() => router.currentRoute.value,
 	newValue => {
-		let appRoute = newValue as any as AppRoute
+		let appRoute = newValue as unknown as IAppRoute
 		addOrLocateTab(appRoute)
 	}
 )
 
 
 onMounted(() => {
-	if (router.currentRoute.value.name == '404') {
+	if (router.currentRoute.value.name == 'notfound') {
+		headerStore.$state.setBreads('/index/notfound')
 		to404()
-		headerStore.$state.setBreads('/index/404')
 	} else {
-		addOrLocateTab(router.currentRoute.value as any as AppRoute)
+		addOrLocateTab(router.currentRoute.value as any as IAppRoute)
 	}
 
 
-	const el: HTMLElement = document.querySelector(".el-tabs__nav")!;
-	if (el) {
-		nextTick(() => {
-			Sortable.create(el, {
-				animation: 150,
-				onEnd({ newIndex, oldIndex }) {
-					//oldIIndex拖放前的位置， newIndex拖放后的位置  
-					const currRow = state.tabItems.splice(oldIndex!, 1)[0];
-					state.tabItems.splice(newIndex!, 0, currRow);
-				},
-			});
-		})
-	}
+	// const el: HTMLElement = document.querySelector(".el-tabs__nav")!;
+	// if (el) {
+	// 	nextTick(() => {
+	// 		Sortable.create(el, {
+	// 			animation: 150,
+	// 			onEnd({ newIndex, oldIndex }) {
+	// 				//oldIIndex拖放前的位置， newIndex拖放后的位置  
+	// 				const currRow = state.tabItems.splice(oldIndex!, 1)[0];
+	// 				state.tabItems.splice(newIndex!, 0, currRow);
+	// 			},
+	// 		});
+	// 	})
+	// }
 })
 
 </script>
@@ -288,7 +270,6 @@ $height: 36px;
 	:deep(.el-tabs) {
 		border: none !important;
 		margin-left: 10px !important;
-		width: 90%;
 
 		.el-tabs__header {
 			border: none;
@@ -296,10 +277,8 @@ $height: 36px;
 			.el-tabs__nav-wrap {
 				margin-top: 5px;
 				border: none;
-				border: none;
 				box-shadow: none;
 
-				// is-disabled
 				.el-tabs__nav-next {
 					height: $height;
 					line-height: 28px;
@@ -318,11 +297,12 @@ $height: 36px;
 				}
 
 				.el-tabs__item {
+					background-color: white;
 					height: 26px;
 					line-height: 23.5px;
 					padding-left: 18px !important;
 					padding-right: 18px !important;
-					border-radius: 2px;
+					border-radius: 4px;
 					transition: unset !important;
 					font-size: 10px;
 					border: 1px solid #d8dce4 !important;

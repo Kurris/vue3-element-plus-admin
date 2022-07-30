@@ -1,5 +1,7 @@
+import { IRouteMeta } from './type'
+import { callback, loggout } from './sso/sso'
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
-import home from './AppRouteIndex'
+import appRouteIndex from './appRouteIndex'
 
 import nprogress from 'nprogress'
 
@@ -8,30 +10,24 @@ const routes = [
 		path: '',
 		redirect: '/index',
 	},
-	{
-		path: '/login',
-		component: () => import('@views/Login.vue'),
-		name: 'login',
-		meta: {
-			title: '登录',
-		},
-	},
+	callback,
+	loggout,
+	appRouteIndex,
 	{
 		path: '/:pathMatch(.*)',
-		redirect: '/index/404',
+		redirect: '/notfound',
 	},
-	home,
 ]
 
 const router = createRouter({
 	history: createWebHistory(),
-	routes: routes as unknown as RouteRecordRaw[],
+	routes: routes as RouteRecordRaw[], //类型继承可转为基类
 })
 
 router.beforeEach(guard => {
 	nprogress.start()
 
-	document.title = ('App | ' + guard.meta.title) as string
+	document.title = (guard.meta as unknown as IRouteMeta).title
 })
 
 router.afterEach(() => {
