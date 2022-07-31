@@ -1,9 +1,9 @@
 <template>
 	<div class="main-header">
 		<div class="left">
-			<el-icon class="navBarStatusIcon" @click="navStore.$state.isCollapse = !navStore.$state.isCollapse">
-				<fold v-show="navStore.$state.isCollapse" />
-				<expand v-show="!navStore.$state.isCollapse" />
+			<el-icon class="navBarStatusIcon" @click="menuSwitchCollapse">
+				<fold v-show="navStore.isCollapse" />
+				<expand v-show="!navStore.isCollapse" />
 			</el-icon>
 
 			<div class="breadCrumb">
@@ -26,11 +26,15 @@
 			<top-right />
 		</div>
 	</div>
+
+	<el-drawer v-model="state.drawerMenuShow" direction="ttb" :before-close="drawerMenuBeforeClose">
+		<span>移动端自定义菜单显示</span>
+	</el-drawer>
 </template>
 
 <script setup lang="ts">
 import { IMenuItem } from '@/type.d/components/layout/IMenuItem';
-import { onBeforeMount, reactive } from 'vue';
+import { nextTick, onBeforeMount, reactive } from 'vue';
 import TopRight from './TopRight.vue'
 
 import { useNavStore, useHeaderStore } from '@/stores/frameworkStore';
@@ -39,11 +43,25 @@ const headerStore = useHeaderStore()
 
 
 const state = reactive({
-	breads: Array<string>()
+	breads: Array<string>(),
+	drawerMenuShow: false
 })
 
+/** 菜单展开/隐藏 */
+const menuSwitchCollapse = () => {
+	navStore.isCollapse = !navStore.isCollapse
+	if (navStore.isHidden) {
+		state.drawerMenuShow = true
+	}
+}
 
-//note:链表反转算法
+/** top2bottom 菜单关闭前 */
+const drawerMenuBeforeClose = (done: () => void) => {
+	navStore.isCollapse = !navStore.isCollapse
+	done()
+}
+
+/** note:链表反转算法 */
 const findItem = (path: string, items: IMenuItem[]) => {
 	for (let index = 0; index < items.length; index++) {
 		const item = items[index]
@@ -65,12 +83,12 @@ const findItem = (path: string, items: IMenuItem[]) => {
 onBeforeMount(() => {
 	console.log('header beforemount');
 
-	headerStore.$state.setBreads = (path: string) => {
-		let searchBreads: string[] = findItem(path, navStore.$state.items)
+	headerStore.setBreads = (path: string) => {
+		let searchBreads: string[] = findItem(path, navStore.items)
 		state.breads = searchBreads.reverse()
 		if (state.breads.length == 0) {
 			setTimeout(() => {
-				headerStore.$state.setBreads(path)
+				nextTick(() => headerStore.setBreads(path));
 			}, 200)
 		}
 	}
