@@ -9,7 +9,7 @@ const signInSettings: UserManagerSettings = {
 	authority: appsetting.VITE_IDENTITYSERVER_AUTHORITY,
 	client_id: 'spa',
 	redirect_uri: location.origin + '/callback',
-	post_logout_redirect_uri: location.origin + '/template',
+	post_logout_redirect_uri: location.origin + '/index',
 	response_type: 'code',
 	userStore: new WebStorageStateStore({ store: localStorage }),
 	scope: 'openid profile offline_access weather:search',

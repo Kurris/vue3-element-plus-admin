@@ -18,15 +18,13 @@ import directiveInstall from './directive/Index'
 var app = createApp(App)
 
 //引用element plus
-app.use(ElementPlus, { zIndex: 3000 })
+app.use(ElementPlus, { size: 'small', zIndex: 3000 })
 
 //引用全局图标
 let currentIcons: any = icons
 for (const iconName in currentIcons) {
 	app.component(iconName, currentIcons[iconName])
 }
-
-console.log(`VITE_HTTP_BASEURL:${import.meta.env.VITE_HTTP_BASEURL}`)
 
 directiveInstall(app)
 app.use(router).use(createPinia()).mount('#app')

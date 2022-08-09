@@ -2,7 +2,7 @@
     <div>
         <el-container ref="app">
             <div v-show="!navStore.isHidden">
-                <brand v-if="navStore.showBrand" />
+                <logo v-if="navStore.showBrand" />
                 <nav-bar />
             </div>
 
@@ -36,10 +36,11 @@ import { useResizeObserver } from '@vueuse/core'
 import NavBar from '@c/layout/NavBar.vue'
 import HeaderBar from '@c/layout/HeaderBar.vue'
 import TabBar from '@c/layout/TabBar.vue'
-import Brand from '../components/layout/Brand.vue'
+import logo from '../components/layout/Logo.vue'
 import nprogress from 'nprogress'
 
 import { useNavStore, useTabStore } from '@/stores/frameworkStore'
+import Logo from '../components/layout/Logo.vue'
 
 const navStore = useNavStore()
 const tabStore = useTabStore()

@@ -26,6 +26,10 @@
 							'显示' :
 							'隐藏'
 					}}页签</el-dropdown-item>
+					<el-dropdown-item @click="navStore.useRipple = !navStore.useRipple">{{ navStore.useRipple ?
+							'禁用' :
+							'启用'
+					}}菜单水波纹效果</el-dropdown-item>
 					<el-dropdown-item disabled divided>v0.0.1</el-dropdown-item>
 				</el-dropdown-menu>
 			</template>

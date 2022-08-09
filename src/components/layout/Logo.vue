@@ -1,7 +1,7 @@
 <template>
     <!--  -->
-    <div class="brand" :class="{ widthS: navStore.isCollapse, widthL: !navStore.isCollapse }">
-        Brand
+    <div class="logo" :class="{ widthS: navStore.isCollapse, widthL: !navStore.isCollapse }">
+        <span>logo</span>
         <span v-show="!navStore.isCollapse">
             :vue3-elementPlus-admin
         </span>
@@ -13,7 +13,7 @@ const navStore = useNavStore()
 
 </script>
 <style lang="scss" scoped>
-.brand {
+.logo {
     display: flex;
     justify-content: center;
     height: var(--header-height);

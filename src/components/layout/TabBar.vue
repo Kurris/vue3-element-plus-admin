@@ -40,15 +40,29 @@
 			</div>
 		</div>
 	</div>
+	<ContextMenu key="tabBar" ref="contextMenu" :items="[
+		{
+			name: 'refresh',
+			displayName: '刷新',
+			icon: '',
+			event: () => {
+				emit('reload')
+			}
+		}
+	]"></ContextMenu>
 </template>
+
+
 <script lang="ts" setup>
 import { useHeaderStore } from '@/stores/frameworkStore';
 import ITabItem from '@type/components/layout/ITabItem'
 import { TabPanelName } from 'element-plus'
 import { onMounted, reactive, ref, watch, computed, nextTick } from 'vue'
 import { useRouter, useRoute } from 'vue-router';
-import Sortable from 'sortablejs';
+// import Sortable from 'sortablejs';
 import { IAppRoute } from '@/router/type';
+import ContextMenu from '../ui/ContextMenu.vue';
+import { IContextMemuItem } from '../ui/Type';
 
 const headerStore = useHeaderStore()
 
@@ -56,8 +70,9 @@ const router = useRouter()
 const route = useRoute()
 
 let dropdownOp = ref()
+let contextMenu = ref()
 
-defineEmits<{
+let emit = defineEmits<{
 	(e: 'reload'): void
 }>()
 
@@ -71,6 +86,7 @@ const state = reactive({
 			closable: false,
 		},
 	]),
+	contextMenuItems: Array<IContextMemuItem>()
 })
 
 /** 跳转到404 */
@@ -181,9 +197,7 @@ const addOrLocateTab = (appRoute: IAppRoute) => {
 			//f12查看id规则
 			const element = document.getElementById(`tab-${existsItem!.name}`)
 			if (element) {
-				element.oncontextmenu = (event) => {
-					event.preventDefault()
-				}
+				contextMenu.value.onRightClick(element)
 			}
 		})
 	}
@@ -209,13 +223,6 @@ const closeOther = computed(() => {
 /** 是否可以关闭全部 */
 const closeAll = computed(() => state.tabItems.length > 1)
 
-
-const tabContextmenu = (event: MouseEvent) => {
-	event.preventDefault()
-	console.log(event);
-}
-
-
 /** 监视路由变化(导航栏切换),添加或者定位到当前tab */
 watch(
 	() => router.currentRoute.value,
@@ -224,7 +231,6 @@ watch(
 		addOrLocateTab(appRoute)
 	}
 )
-
 
 onMounted(() => {
 	if (router.currentRoute.value.name == 'notfound') {

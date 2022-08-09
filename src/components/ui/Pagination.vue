@@ -40,7 +40,7 @@ const handleCurrentChange = async (val: number) => {
 <style scoped lang="scss">
 .page {
     display: flex;
-    justify-content: space-around;
+    // justify-content: space-around;
     margin-top: 24px;
 }
 </style>

@@ -31,6 +31,14 @@ export interface IColumn {
 	editable?: boolean
 }
 
+/** 菜单接口 */
+export interface IContextMemuItem {
+	icon: string
+	name: string
+	displayName: string
+	event: (e: MouseEvent) => void
+}
+
 export interface IPaginationResponse {
 	pageIndex: number
 	pageSize: number
