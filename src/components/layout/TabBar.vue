@@ -113,10 +113,11 @@ const showDropdown = () => {
 
 /** 切换tab */
 const tabChange = (activeTab: TabPanelName) => {
-	state.activeTab = activeTab.toString()
 
-	let existsItem = state.tabItems.find(x => x.name == state.activeTab)
-	if (existsItem) {
+	state.activeTab = activeTab.toString()
+	let existsItem = state.tabItems.find(x => x.name == activeTab.toString())
+	//存在tab项并且当前的路由有改变,路由跳转
+	if (existsItem && router.currentRoute.value.path != existsItem.path) {
 		let path = existsItem.path
 		router.push({
 			path: path,
@@ -201,6 +202,7 @@ const addOrLocateTab = (appRoute: IAppRoute) => {
 			}
 		})
 	}
+
 	state.activeTab = existsItem.name
 	headerStore.$state.setBreads(existsItem.path)
 }
