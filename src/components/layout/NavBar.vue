@@ -20,30 +20,20 @@
 			<template #dropdown>
 				<el-dropdown-menu>
 					<el-dropdown-item @click="navStore.showBrand = !navStore.showBrand">{{ navStore.showBrand ?
-							'隐藏' : '显示'
-					}}logo</el-dropdown-item>
+		'隐藏' : '显示'
+}}logo</el-dropdown-item>
 					<el-dropdown-item @click="tabStore.isHidden = !tabStore.isHidden">{{ tabStore.isHidden ?
-							'显示' :
-							'隐藏'
-					}}页签</el-dropdown-item>
+		'显示' :
+		'隐藏'
+}}页签</el-dropdown-item>
 					<el-dropdown-item @click="navStore.useRipple = !navStore.useRipple">{{ navStore.useRipple ?
-							'禁用' :
-							'启用'
-					}}菜单水波纹效果</el-dropdown-item>
+		'禁用' :
+		'启用'
+}}菜单水波纹效果</el-dropdown-item>
 					<el-dropdown-item disabled divided>v0.0.1</el-dropdown-item>
 				</el-dropdown-menu>
 			</template>
 		</el-dropdown>
-		<!-- <el-button v-if="!navStore.isCollapse"
-			style="border-radius: 30px;margin-left: 50px;transition: all 0.3s ease-in-out;" text="plain">
-			<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-tag"
-				viewBox="0 0 16 16">
-				<path d="M6 4.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm-1 0a.5.5 0 1 0-1 0 .5.5 0 0 0 1 0z" />
-				<path
-					d="M2 1h4.586a1 1 0 0 1 .707.293l7 7a1 1 0 0 1 0 1.414l-4.586 4.586a1 1 0 0 1-1.414 0l-7-7A1 1 0 0 1 1 6.586V2a1 1 0 0 1 1-1zm0 5.586 7 7L13.586 9l-7-7H2v4.586z" />
-			</svg>
-			<span>v0.0.1</span>
-		</el-button> -->
 	</div>
 </template>
 
@@ -51,7 +41,6 @@
 import { ref, onBeforeMount, computed } from 'vue';
 import MenuTree from './MenuTree.vue'
 import { IMenuItem } from '@type/components/layout/IMenuItem'
-import http from '@/net/http';
 import { useNavStore, useTabStore } from '@/stores/frameworkStore';
 const navStore = useNavStore()
 const tabStore = useTabStore()
@@ -131,7 +120,6 @@ $settingHeight : 6vh;
 	min-height: 400px;
 }
 
-// var(--header-height)
 .el-menu {
 	height: calc(100vh - $settingHeight - v-bind(logoHeight));
 	border: none !important;

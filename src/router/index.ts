@@ -15,7 +15,7 @@ const routes = [
 	appRouteIndex,
 	{
 		path: '/:pathMatch(.*)',
-		redirect: '/notfound',
+		redirect: '/index/notfound',
 	},
 ]
 

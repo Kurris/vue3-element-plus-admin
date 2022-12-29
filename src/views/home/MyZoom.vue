@@ -28,8 +28,11 @@ export default {
 }
 </script>
 <script lang="ts" setup>
+
 import { ref } from 'vue';
 const activeTab = ref('first')
+
 </script>
 <style lang="scss" scoped>
+
 </style>

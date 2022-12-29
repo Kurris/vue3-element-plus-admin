@@ -10,7 +10,7 @@
 	"dependencies": {
 		"@element-plus/icons-vue": "^1.1.4",
 		"axios": "^0.26.1",
-		"element-plus": "^2.2.10",
+		"element-plus": "^2.2.26",
 		"normalize.css": "^8.0.1",
 		"nprogress": "^0.2.0",
 		"oidc-client": "^1.11.5",

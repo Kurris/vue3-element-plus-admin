@@ -41,22 +41,22 @@
 		</div>
 	</div>
 	<ContextMenu key="tabBar" ref="contextMenu" :items="[
-		{
-			name: 'refresh',
-			displayName: '刷新',
-			icon: '',
-			event: () => {
-				emit('reload')
-			}
+	{
+		name: 'refresh',
+		displayName: '刷新',
+		icon: '',
+		event: () => {
+			emit('reload')
 		}
-	]"></ContextMenu>
+	}
+]"></ContextMenu>
 </template>
 
 
 <script lang="ts" setup>
 import { useHeaderStore } from '@/stores/frameworkStore';
 import ITabItem from '@type/components/layout/ITabItem'
-import { TabPanelName } from 'element-plus'
+import { TabPaneName } from 'element-plus'
 import { onMounted, reactive, ref, watch, computed, nextTick } from 'vue'
 import { useRouter, useRoute } from 'vue-router';
 // import Sortable from 'sortablejs';
@@ -112,7 +112,7 @@ const showDropdown = () => {
 
 
 /** 切换tab */
-const tabChange = (activeTab: TabPanelName) => {
+const tabChange = (activeTab: TabPaneName) => {
 
 	state.activeTab = activeTab.toString()
 	let existsItem = state.tabItems.find(x => x.name == activeTab.toString())
@@ -126,7 +126,7 @@ const tabChange = (activeTab: TabPanelName) => {
 }
 
 /** 移除当前tab */
-const tabRemove = (tab: TabPanelName) => {
+const tabRemove = (tab: TabPaneName) => {
 	let i = state.tabItems.findIndex(x => x.name == tab.toString())
 	if (i >= 0) {
 		state.tabItems.splice(i, 1)

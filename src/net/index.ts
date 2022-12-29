@@ -1,5 +1,5 @@
 import axios, { AxiosRequestConfig, AxiosResponse } from 'axios'
-import { ElNotification } from 'element-plus'
+import { ElMessage } from 'element-plus'
 import NProgress from 'nprogress'
 import BaseResponse from './type/BaseResponse'
 import { userSignInManager } from '@/lib/oidclib'
@@ -63,9 +63,8 @@ export const requestFunction = <TUserResponse>(config: MyRequestConfig): Promise
 
 				if (data.status == 500) {
 					if (config.useNotify && config.useNotify == true) {
-						ElNotification({
+						ElMessage({
 							type: 'error',
-							title: '请求异常',
 							message: data.message as any,
 						})
 					}
@@ -79,21 +78,19 @@ export const requestFunction = <TUserResponse>(config: MyRequestConfig): Promise
 			NProgress.done()
 			//网络异常
 			if (error.message == 'Network Error') {
-				ElNotification.error('网络异常')
+				ElMessage.error('网络异常,无法连接到服务端')
 			} else {
 				let result = error.response as AxiosResponse
 
 				if (result.status == 401) {
 					await userSignInManager.signinRedirect()
 				} else if (error.response.status == 404) {
-					ElNotification({
-						title: '请求异常',
+					ElMessage({
 						type: 'error',
 						message: '请求接口不存在',
 					})
 				} else if (result.status == 500) {
-					ElNotification({
-						title: '请求异常',
+					ElMessage({
 						type: 'error',
 						message: '服务器异常' + result.data?.message,
 					})

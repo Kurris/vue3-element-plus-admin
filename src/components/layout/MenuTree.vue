@@ -16,10 +16,9 @@
         <template v-for="child in item.children">
             <menu-tree :item="child" />
         </template>
-
     </el-sub-menu>
 </template>
- <script lang="ts">
+<script lang="ts">
 
 import { IMenuItem } from '@type/components/layout/IMenuItem'
 import { useNavStore } from '@/stores/frameworkStore';

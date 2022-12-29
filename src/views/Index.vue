@@ -11,7 +11,10 @@
                     <header-bar />
                 </el-header>
 
-                <tab-bar @reload="reload" v-show="!tabStore.isHidden" />
+                <div v-show="!tabStore.isHidden">
+                    <tab-bar @reload="reload" />
+                </div>
+
 
                 <el-main>
                     <el-config-provider :locale="zhCN">
