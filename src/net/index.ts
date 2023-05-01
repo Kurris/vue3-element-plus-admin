@@ -83,7 +83,7 @@ export const requestFunction = <TUserResponse>(config: MyRequestConfig): Promise
 				let result = error.response as AxiosResponse
 
 				if (result.status == 401) {
-					await userSignInManager.signinRedirect()
+					await userSignInManager.signinRedirect({ state: window.location.href })
 				} else if (error.response.status == 404) {
 					ElMessage({
 						type: 'error',

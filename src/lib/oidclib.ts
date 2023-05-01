@@ -7,7 +7,7 @@ Log.level = appsetting.VITE_OIDC_LOG_LEVEL
 /** 登录配置 */
 const signInSettings: UserManagerSettings = {
 	authority: appsetting.VITE_IDENTITYSERVER_AUTHORITY,
-	client_id: 'bde570495a7de0b6',
+	client_id: '239d7c6083256ca6',
 	redirect_uri: location.origin + '/callback',
 	post_logout_redirect_uri: location.origin + '/index',
 	response_type: 'code',

@@ -12,7 +12,7 @@ export default async <TUserResponse>(config: MyRequestConfig): Promise<BaseRespo
 	let accessToken = user?.access_token
 
 	if (accessToken == undefined) {
-		await userSignInManager.signinRedirect()
+		await userSignInManager.signinRedirect({ state: window.location.href })
 	} else {
 		let bearerToken = 'Bearer ' + accessToken
 		if (config.headers != undefined) {

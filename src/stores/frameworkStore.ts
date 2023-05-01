@@ -12,7 +12,7 @@ export const useNavStore = defineStore('navStore', {
 			items: Array<IMenuItem>(),
 			/**菜单点击水波纹效果*/
 			useRipple: false,
-			showBrand: true
+			showBrand: true,
 		}
 	},
 	actions: {
@@ -38,7 +38,7 @@ export const useHeaderStore = defineStore('headerStore', {
 	state: () => {
 		return {
 			/** 设置面包屑 */
-			setBreads: (path: string) => { },
+			setBreads: (path: string) => {},
 		}
 	},
 })

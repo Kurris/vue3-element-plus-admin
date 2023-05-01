@@ -29,9 +29,10 @@ onBeforeMount(() => {
 
 	userCallbackManager.signinRedirectCallback().then(user => {
 		if (user) {
-			router.push({
-				path: '/index/dashboard',
-			})
+			// router.push({
+			// 	path: '/index/dashboard',
+			// })
+			window.location = user.state;
 		}
 	}).catch(err => {
 		clearInterval(timer)
